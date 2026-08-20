@@ -1,5 +1,5 @@
 /**
- * SANGRAM — Unified Investigative Analytics Platform
+ * SANGRAM ï¿½ Unified Investigative Analytics Platform
  * Backend API Server v2.0
  *
  * AI Provider: Groq Cloud API (https://api.groq.com/openai/v1)
@@ -23,7 +23,7 @@ const app = express();
 const PORT = Number(process.env.PORT) || 5000;
 
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || '*',
+  origin: '*',
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
@@ -90,7 +90,7 @@ function telecomRisk(d: { callsIn24h: number; uniqueTargets: number; towerHops: 
   let score = 0; const reasons: string[] = [];
   if (d.callsIn24h > 200) { score += 30; reasons.push(`Mass calling: ${d.callsIn24h} calls/24h`); }
   else if (d.callsIn24h > 80) { score += 15; reasons.push(`High call volume: ${d.callsIn24h}`); }
-  if (d.uniqueTargets / Math.max(d.callsIn24h, 1) > 0.8) { score += 20; reasons.push(`${d.uniqueTargets} unique targets — scattered dialing pattern`); }
+  if (d.uniqueTargets / Math.max(d.callsIn24h, 1) > 0.8) { score += 20; reasons.push(`${d.uniqueTargets} unique targets ï¿½ scattered dialing pattern`); }
   if (d.towerHops > 8) { score += 20; reasons.push(`Tower hopping: ${d.towerHops} BTS in 24h`); }
   if (d.outboundRatio > 0.85) { score += 15; reasons.push('Asymmetric outbound ratio (dialer profile)'); }
   if (d.shortCallPct > 0.6) { score += 10; reasons.push('High short-call rate (OTP interception / robocall)'); }
@@ -100,7 +100,7 @@ function telecomRisk(d: { callsIn24h: number; uniqueTargets: number; towerHops: 
 function bankRisk(d: { inflowCount: number; uniqueSenders: number; outflowVelocityPct: number; dormant: boolean; mulePattern: boolean }): { score: number; reasons: string[] } {
   let score = 0; const reasons: string[] = [];
   if (d.inflowCount > 30) { score += 25; reasons.push(`${d.inflowCount} inflows from ${d.uniqueSenders} unique counterparties`); }
-  if (d.outflowVelocityPct > 85) { score += 30; reasons.push(`${d.outflowVelocityPct}% outflow within 2h — rapid cash-out pattern`); }
+  if (d.outflowVelocityPct > 85) { score += 30; reasons.push(`${d.outflowVelocityPct}% outflow within 2h ï¿½ rapid cash-out pattern`); }
   if (d.dormant) { score += 15; reasons.push('Dormant account suddenly activated'); }
   if (d.mulePattern) { score += 20; reasons.push('Classic mule pattern: aggregate ? disperse ? cash-out'); }
   return { score: Math.min(100, score), reasons };
@@ -132,7 +132,7 @@ const DB = {
   cases: [
     {
       id: 'INV-2047', caseNumber: 'CYB/MUM/2026/2047',
-      title: 'Suspicious Digital & Financial Network — Video Rating UPI Scam',
+      title: 'Suspicious Digital & Financial Network ï¿½ Video Rating UPI Scam',
       category: 'UPI Job Fraud', severity: 'HIGH',
       status: 'ACTIVE INVESTIGATION',
       registeredDate: '2026-08-02', policeStation: 'BKC Cyber Cell, Mumbai',
@@ -142,10 +142,10 @@ const DB = {
       searchTokens: ['P102', 'P087', 'A204', 'A301', '+91 99201 88102', 'quick_jobs_help'],
       metrics: { totalPhoneIntercepts: 1842, flaggedCalls: 312, ipSessions: 4891, suspiciousIPs: 47, totalFinancialVolume: '?4.2Cr', frozenAmount: '?1.1Cr', identifiedMuleAccounts: 14, socialHandlesMonitored: 23, crossDomainCorrelationConfidence: 94 },
       domainBreakdown: {
-        cdr: { keyFinding: 'Mass dialing from SIM cluster — 312 flagged calls in 48h window targeting 290 unique victims.', primaryNumbers: ['+91 99201 88102', '+91 88019 20193', '+91 70118 29301'], cellTowerHotspots: ['TWR-MUM-401 (Nariman Point)', 'TWR-MUM-208 (BKC)', 'TWR-MUM-319 (Andheri)'], callBurstWindows: '09:00–11:30 IST & 15:00–18:00 IST daily' },
+        cdr: { keyFinding: 'Mass dialing from SIM cluster ï¿½ 312 flagged calls in 48h window targeting 290 unique victims.', primaryNumbers: ['+91 99201 88102', '+91 88019 20193', '+91 70118 29301'], cellTowerHotspots: ['TWR-MUM-401 (Nariman Point)', 'TWR-MUM-208 (BKC)', 'TWR-MUM-319 (Andheri)'], callBurstWindows: '09:00ï¿½11:30 IST & 15:00ï¿½18:00 IST daily' },
         ipdr: { keyFinding: 'VPN-masked sessions from 3 IPs routing through Singapore and Malaysia endpoints. 4.8GB upload anomaly in 6h window.', activeVPNs: ['NordVPN Exit (SG)', 'ExpressVPN (MY)', 'ProtonVPN (CH)'], topOriginatingIPs: ['49.32.88.19', '103.91.22.10', '210.89.44.02'], geoLocations: ['Mumbai (VPN Masked)', 'Singapore', 'Malaysia'] },
         bank: { keyFinding: 'A204 received ?1.12Cr from 45 victims in single session. 91% outflow within 105 minutes via 6 sub-accounts.', primaryAccounts: ['A204 (Kotak XXXX9281)', 'A301 (AU Small Fin XXXX1029)', 'A502 (Yes Bank XXXX0192)'], layeringVelocity: '91% within 105 minutes of credit', cryptoOffRampDetected: true },
-        social: { keyFinding: 'Telegram channel @quick_jobs_help (18-day-old) broadcast to 4,200 subscribers. 23 coordinated accounts identified.', recruitmentChannels: ['@quick_jobs_help', '@video_task_earn', '@parttime_upi_2026'], targetHandles: ['P087 – @target_1', 'P044 – @target_2'], compromisedCredentialsCount: 8 }
+        social: { keyFinding: 'Telegram channel @quick_jobs_help (18-day-old) broadcast to 4,200 subscribers. 23 coordinated accounts identified.', recruitmentChannels: ['@quick_jobs_help', '@video_task_earn', '@parttime_upi_2026'], targetHandles: ['P087 ï¿½ @target_1', 'P044 ï¿½ @target_2'], compromisedCredentialsCount: 8 }
       },
       keySuspects: [
         { id: 'P102', name: 'Rajesh K. / "CyberBoss_Raj"', role: 'Mastermind', risk: 'HIGH', phone: '+91 99201 88102', bankAcc: 'Kotak #****9281', social: '@quick_jobs_help' },
@@ -174,7 +174,7 @@ const DB = {
   ],
 
   callPatterns: [
-    { id: 'cp-1', title: 'Burst Dialing Window', description: '312 calls placed in 2.5h window (09:00–11:30 IST). Classic SIM box mass-dialing signature.', type: 'burst', icon: 'phone_forwarded', badge: '312 calls', isHighRisk: true }
+    { id: 'cp-1', title: 'Burst Dialing Window', description: '312 calls placed in 2.5h window (09:00ï¿½11:30 IST). Classic SIM box mass-dialing signature.', type: 'burst', icon: 'phone_forwarded', badge: '312 calls', isHighRisk: true }
   ],
 
   ipdrRecords: [
@@ -198,13 +198,13 @@ const DB = {
   ],
 
   activityTimeline: [
-    { id: 'tl-1', time: '14:31 IST', title: 'High-Risk Call — P102?P087', description: 'Critical coordination call. UPI transfer of ?14.8L followed 15s later.', color: 'bg-rose-500', isPulsing: true, category: 'cdr' }
+    { id: 'tl-1', time: '14:31 IST', title: 'High-Risk Call ï¿½ P102?P087', description: 'Critical coordination call. UPI transfer of ?14.8L followed 15s later.', color: 'bg-rose-500', isPulsing: true, category: 'cdr' }
   ],
 
   networkNodes: [
-    { id: 'P102', label: 'P102 — Rajesh K.', type: 'person', risk: 'HIGH', x: 400, y: 220 },
-    { id: 'P087', label: 'P087 — Vikram S.', type: 'person', risk: 'HIGH', x: 200, y: 340 },
-    { id: 'A204', label: 'A204 — Kotak XXXX9281', type: 'bank', risk: 'HIGH', x: 220, y: 500 }
+    { id: 'P102', label: 'P102 ï¿½ Rajesh K.', type: 'person', risk: 'HIGH', x: 400, y: 220 },
+    { id: 'P087', label: 'P087 ï¿½ Vikram S.', type: 'person', risk: 'HIGH', x: 200, y: 340 },
+    { id: 'A204', label: 'A204 ï¿½ Kotak XXXX9281', type: 'bank', risk: 'HIGH', x: 220, y: 500 }
   ],
 
   networkLinks: [
@@ -225,7 +225,7 @@ const DB = {
   ] as any[],
 
   predictions: [
-    { id: 'pr-1', type: 'Next Fraud Call Window', timeWindow: 'Next 4–6 hours (15:00–18:00 IST)', area: 'TWR-MUM-401 / BKC cluster', confidence: 88, threatLevel: 'CRITICAL', action: 'Pre-emptive tower geo-fence lock + CDR preservation order' }
+    { id: 'pr-1', type: 'Next Fraud Call Window', timeWindow: 'Next 4ï¿½6 hours (15:00ï¿½18:00 IST)', area: 'TWR-MUM-401 / BKC cluster', confidence: 88, threatLevel: 'CRITICAL', action: 'Pre-emptive tower geo-fence lock + CDR preservation order' }
   ]
 };
 
@@ -295,8 +295,8 @@ app.get('/api/network', (_req, res) => res.json({ nodes: DB.networkNodes, links:
 app.get('/api/search', (req, res) => {
   const q = ((req.query.q as string) || '').toLowerCase();
   const allItems = [
-    { type: 'entity', id: 'P102', label: 'P102 — Rajesh K.', risk: 'HIGH', case: 'INV-2047', detail: 'Mastermind' },
-    { type: 'account', id: 'A204', label: 'A204 — Kotak', risk: 'HIGH', case: 'INV-2047', detail: 'Mule' }
+    { type: 'entity', id: 'P102', label: 'P102 ï¿½ Rajesh K.', risk: 'HIGH', case: 'INV-2047', detail: 'Mastermind' },
+    { type: 'account', id: 'A204', label: 'A204 ï¿½ Kotak', risk: 'HIGH', case: 'INV-2047', detail: 'Mule' }
   ];
   let results = q ? allItems.filter(i => i.label.toLowerCase().includes(q) || i.id.toLowerCase().includes(q)) : allItems;
   res.json({ results, total: results.length });
@@ -321,7 +321,7 @@ app.post('/api/ai/next-move', async (req, res) => {
   const fallback = { entityId, caseId, threatLevel: 'CRITICAL', confidence: 91, vectors: [{ title: 'Cash-Out at A301', risk: 94, detail: 'ATM burst withdrawal expected within 90min', timeframe: 'Immediate' }], preventiveActions: ['Section 91 CrPC notice to AU Small Finance', 'DoT TAFCOP IMEI blacklist for IMEI 864920048192031'] };
   try {
     const text = await askGroq('You are SANGRAM Criminal Next Move Predictive Engine. Predict cybercrime syndicate next actions.', `Predict next moves for ${entityId} in ${caseId}`);
-    addAuditLog('NETWORK_EXPLORE', `Groq AI Next Move prediction — ${entityId}`, 'Groq AI', caseId);
+    addAuditLog('NETWORK_EXPLORE', `Groq AI Next Move prediction ï¿½ ${entityId}`, 'Groq AI', caseId);
     return res.json(JSON.parse(text));
   } catch (err: any) {
     return res.json(fallback);
