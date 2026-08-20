@@ -100,7 +100,7 @@ export const InteractiveNetworkGraph: React.FC<InteractiveNetworkGraphProps> = (
     : null;
 
   return (
-    <div className="flex flex-col lg:flex-row bg-slate-950 rounded-3xl border border-white/10 overflow-hidden shadow-2xl relative">
+    <div className="InteractiveNetworkGraph flex flex-col lg:flex-row bg-slate-950 rounded-3xl border border-white/10 overflow-hidden shadow-2xl relative">
       {/* Keyframes */}
       <style>{`
         @keyframes lineFlow {
@@ -120,8 +120,8 @@ export const InteractiveNetworkGraph: React.FC<InteractiveNetworkGraphProps> = (
         }
       `}</style>
 
-      {/* Main Canvas Area */}
-      <div className={`relative flex-1 bg-gradient-to-br from-[#02040a] via-slate-950 to-indigo-950/30 ${height} overflow-hidden`}>
+      {/* Main Canvas Area (network-canvas) */}
+      <div className={`network-canvas relative flex-1 bg-gradient-to-br from-[#02040a] via-slate-950 to-indigo-950/30 ${height} overflow-hidden`}>
         {/* Controls Overlay */}
         <div className="absolute top-4 left-4 z-20 flex flex-wrap items-center gap-2 bg-slate-900/90 backdrop-blur-md p-2 rounded-2xl border border-white/10 shadow-xl">
           <span className="text-[10px] uppercase font-bold text-slate-400 px-2">Filter Network:</span>
@@ -305,8 +305,8 @@ export const InteractiveNetworkGraph: React.FC<InteractiveNetworkGraphProps> = (
         </div>
       </div>
 
-      {/* Node & AI Note Inspector Sidebar */}
-      <div className="w-full lg:w-96 bg-slate-900/95 border-t lg:border-t-0 lg:border-l border-white/10 p-6 flex flex-col justify-between overflow-y-auto space-y-4">
+      {/* Node & AI Note Inspector Sidebar (network-sidebar) */}
+      <div className="network-sidebar w-full lg:w-96 bg-slate-900/95 border-t lg:border-t-0 lg:border-l border-white/10 p-6 flex flex-col justify-between overflow-y-auto space-y-4">
         {selectedNode ? (
           <div className="space-y-4">
             <div className="flex items-center justify-between pb-4 border-b border-white/10">

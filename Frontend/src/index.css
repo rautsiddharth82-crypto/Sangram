@@ -253,8 +253,73 @@
   background-color: #F8FAFC !important;
 }
 
-/* Interactive Network Graph in Light Mode */
+/* ----------------------------------------------------------
+   INTERACTIVE NETWORK GRAPH LIGHT MODE OVERRIDES
+   ---------------------------------------------------------- */
 .theme-light .InteractiveNetworkGraph {
+  background-color: #FFFFFF !important;
+  border-color: #E2E8F0 !important;
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05) !important;
+}
+
+/* Inner canvas background: light blue-gray instead of dark black */
+.theme-light .network-canvas {
   background: #F8FAFC !important;
-  border-color: #CBD5E1 !important;
+  background-color: #F8FAFC !important;
+}
+
+/* Sidebar inside graph */
+.theme-light .network-sidebar {
+  background-color: #FFFFFF !important;
+  border-color: #E2E8F0 !important;
+  color: #0F172A !important;
+}
+
+.theme-light .network-sidebar h4,
+.theme-light .network-sidebar span,
+.theme-light .network-sidebar p {
+  color: #0F172A !important;
+}
+
+.theme-light .network-sidebar span.text-slate-400 {
+  color: #64748B !important;
+}
+
+/* Node labels (text elements on SVG lines) */
+.theme-light .InteractiveNetworkGraph svg text {
+  fill: #475569 !important;
+  font-weight: 700 !important;
+}
+
+/* Node label pills on canvas */
+.theme-light .network-canvas div[class*="bg-slate-900"] {
+  background-color: #FFFFFF !important;
+  border-color: #E2E8F0 !important;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05) !important;
+}
+
+.theme-light .network-canvas div[class*="bg-slate-900"] span {
+  color: #0F172A !important;
+}
+
+.theme-light .network-canvas div[class*="bg-slate-900"] span.text-slate-400 {
+  color: #64748B !important;
+}
+
+/* Controls overlay inside canvas */
+.theme-light .network-canvas div[class*="bg-slate-900/90"] {
+  background-color: #FFFFFF !important;
+  border-color: #E2E8F0 !important;
+}
+
+.theme-light .network-canvas div[class*="bg-slate-900/90"] span {
+  color: #0F172A !important;
+}
+
+.theme-light .network-canvas button {
+  color: #475569 !important;
+}
+
+.theme-light .network-canvas button:hover {
+  background-color: #F1F5F9 !important;
 }
