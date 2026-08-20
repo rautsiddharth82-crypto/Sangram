@@ -20,8 +20,8 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({
 }) => {
   return (
     <div className="flex flex-col gap-8 animate-fade-in">
-      {/* Header Banner */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 bg-gradient-to-r from-slate-900/80 via-slate-900/40 to-slate-950/80 p-6 sm:p-8 rounded-[32px] border border-white/10 shadow-2xl backdrop-blur-2xl">
+      {/* Header Banner (hero-banner) */}
+      <div className="hero-banner flex flex-col lg:flex-row lg:items-center justify-between gap-6 bg-slate-900 p-6 sm:p-8 rounded-[32px] border border-white/10 shadow-2xl backdrop-blur-2xl">
         <div className="space-y-2">
           <div className="flex flex-wrap items-center gap-3">
             <span className="px-3 py-1 bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 text-xs font-bold rounded-full uppercase tracking-wider">

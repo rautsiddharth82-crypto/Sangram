@@ -47,7 +47,7 @@
   font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }
 
-/* Immersive Glassmorphism styling */
+/* Glassmorphism styling */
 .glass-panel {
   background: rgba(255, 255, 255, 0.02);
   backdrop-filter: blur(24px);
@@ -69,7 +69,7 @@
   background: rgba(255, 255, 255, 0.05);
 }
 
-/* Custom scrollbar */
+/* Scrollbars */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -89,32 +89,28 @@
 }
 
 /* ----------------------------------------------------------
-   HIGH-CONTRAST BRIGHT / LIGHT MODE STYLES
+   HIGH-CONTRAST LIGHT MODE STYLES (MATCHES IPDR REFERENCE UI)
    ---------------------------------------------------------- */
-.theme-light {
-  background-color: #F4F7FB !important;
+.theme-light,
+.theme-light body,
+.theme-light div#root {
+  background-color: #F0F3F8 !important;
   color: #0F172A !important;
 }
 
-.theme-light body {
-  background-color: #F4F7FB !important;
-  color: #0F172A !important;
+.theme-light main {
+  background-color: #F0F3F8 !important;
 }
 
 /* Sidebar Light Mode */
 .theme-light aside#main-sidebar {
   background-color: #FFFFFF !important;
   border-color: #E2E8F0 !important;
-  backdrop-filter: none !important;
-  box-shadow: 2px 0 16px rgba(0, 0, 0, 0.04) !important;
+  box-shadow: 2px 0 16px rgba(15, 23, 42, 0.05) !important;
 }
 
 .theme-light aside#main-sidebar h1 {
   color: #0F172A !important;
-}
-
-.theme-light aside#main-sidebar p {
-  color: #64748B !important;
 }
 
 .theme-light aside#main-sidebar button {
@@ -122,7 +118,7 @@
 }
 
 .theme-light aside#main-sidebar button:hover {
-  background-color: #F8FAFC !important;
+  background-color: #F1F5F9 !important;
   color: #0F172A !important;
 }
 
@@ -130,20 +126,18 @@
   background-color: #F1F5F9 !important;
   border-color: #E2E8F0 !important;
   color: #0F172A !important;
-  font-weight: 600 !important;
-  box-shadow: none !important;
+  font-weight: 700 !important;
 }
 
 .theme-light aside#main-sidebar button[id^="nav-item-"].bg-white\/10 .material-symbols-outlined {
-  color: #0F172A !important;
+  color: #4F46E5 !important;
 }
 
 /* Header Light Mode */
 .theme-light header {
   background-color: #FFFFFF !important;
   border-color: #E2E8F0 !important;
-  backdrop-filter: none !important;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05) !important;
+  box-shadow: 0 1px 6px rgba(15, 23, 42, 0.04) !important;
 }
 
 .theme-light header span {
@@ -151,14 +145,9 @@
 }
 
 .theme-light header #active-case-btn {
-  color: #1D4ED8 !important;
-  border-color: #2563EB !important;
-}
-
-.theme-light header span.bg-rose-500\/10 {
-  background-color: #EFF6FF !important;
-  color: #1D4ED8 !important;
-  border-color: #BFDBFE !important;
+  background-color: #F1F5F9 !important;
+  border-color: #CBD5E1 !important;
+  color: #0F172A !important;
 }
 
 .theme-light header button[id$="-btn"] {
@@ -167,41 +156,40 @@
   color: #475569 !important;
 }
 
-.theme-light header button[id$="-btn"]:hover {
-  background-color: #F1F5F9 !important;
-  color: #0F172A !important;
-}
-
-/* Glass Panels & Cards in Light Mode */
-.theme-light .glass-panel,
-.theme-light .glass-card,
-.theme-light main div[class*="bg-slate-950"],
-.theme-light main div[class*="bg-white\/"],
-.theme-light main div[class*="bg-[#02040a]"] {
+/* Cards & Bento Grid in Light Mode */
+.theme-light .bg-white\/\\[0\\.03\\],
+.theme-light div[class*="bg-white/0.03"],
+.theme-light div[class*="bg-white/5"] {
   background-color: #FFFFFF !important;
-  backdrop-filter: none !important;
   border-color: #E2E8F0 !important;
-  box-shadow: 0 2px 10px -2px rgba(0, 0, 0, 0.06) !important;
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05) !important;
 }
 
-/* Headings and body text in Light Mode */
-.theme-light h1,
-.theme-light h2,
-.theme-light h3,
-.theme-light h4,
-.theme-light h5,
 .theme-light .text-white {
   color: #0F172A !important;
 }
 
-.theme-light .text-slate-200,
+.theme-light .text-slate-400,
 .theme-light .text-slate-300 {
-  color: #1E293B !important;
+  color: #475569 !important;
 }
 
-.theme-light .text-slate-400,
-.theme-light .text-slate-500 {
-  color: #64748B !important;
+/* Dark Hero Banner Override in Light Mode */
+.theme-light .hero-banner {
+  background: #0F172A !important;
+  border-color: #1E293B !important;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.15) !important;
+}
+
+.theme-light .hero-banner h2,
+.theme-light .hero-banner .text-white,
+.theme-light .hero-banner strong {
+  color: #FFFFFF !important;
+}
+
+.theme-light .hero-banner p,
+.theme-light .hero-banner span.text-slate-400 {
+  color: #94A3B8 !important;
 }
 
 /* Inputs & Selects in Light Mode */
@@ -214,12 +202,6 @@
 
 .theme-light input[type="text"]::placeholder {
   color: #94A3B8 !important;
-}
-
-/* Primary Action Buttons */
-.theme-light button.bg-white {
-  background-color: #0F172A !important;
-  color: #FFFFFF !important;
 }
 
 /* Tables in Light Mode */
@@ -235,7 +217,7 @@
 
 .theme-light td {
   border-color: #F1F5F9 !important;
-  color: #1E293B !important;
+  color: #0F172A !important;
 }
 
 .theme-light tr:hover td {
@@ -243,21 +225,7 @@
 }
 
 /* Interactive Network Graph in Light Mode */
-.theme-light .InteractiveNetworkGraph,
-.theme-light div[class*="from-[#02040a]"] {
+.theme-light .InteractiveNetworkGraph {
   background: #F8FAFC !important;
   border-color: #CBD5E1 !important;
-}
-
-/* Light Mode Scrollbars */
-.theme-light ::-webkit-scrollbar-track {
-  background: #F4F7FB;
-}
-
-.theme-light ::-webkit-scrollbar-thumb {
-  background: #CBD5E1;
-}
-
-.theme-light ::-webkit-scrollbar-thumb:hover {
-  background: #94A3B8;
 }
