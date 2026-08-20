@@ -158,7 +158,7 @@ export const CALL_PATTERNS: CallPattern[] = [
   {
     id: 'cp-1',
     title: 'Burst Dialing Signature',
-    description: '312 calls placed in 2.5h window (09:00–11:30 IST). Classic SIM box mass-dialing profile.',
+    description: '312 calls placed in 2.5h window (09:00ï¿½11:30 IST). Classic SIM box mass-dialing profile.',
     type: 'burst',
     icon: 'phone_forwarded',
     badge: '312 calls',
@@ -311,7 +311,7 @@ export const BANK_TRANSACTIONS: BankTransaction[] = [
     transactionId: 'TXN-UPI-2047-001',
     from: 'Victim-G (quicktask.pay@ybl)',
     to: 'A204 (Kotak Mahindra XXXX9281)',
-    amount: '?49,000',
+    amount: 'â‚¹49,000',
     amountNumeric: 49000,
     risk: 'HIGH',
     status: 'FLAGGED',
@@ -324,7 +324,7 @@ export const BANK_TRANSACTIONS: BankTransaction[] = [
     transactionId: 'TXN-IMPS-2047-089',
     from: 'A204 (Kotak Mahindra XXXX9281)',
     to: 'A301 (AU Small Finance XXXX1029)',
-    amount: '?14,80,000',
+    amount: 'â‚¹14,80,000',
     amountNumeric: 1480000,
     risk: 'HIGH',
     status: 'FLAGGED',
@@ -337,7 +337,7 @@ export const BANK_TRANSACTIONS: BankTransaction[] = [
     transactionId: 'TXN-RTGS-2047-902',
     from: 'A301 (AU Small Finance XXXX1029)',
     to: 'A502 (Yes Bank XXXX0192)',
-    amount: '?22,50,000',
+    amount: 'â‚¹22,50,000',
     amountNumeric: 2250000,
     risk: 'HIGH',
     status: 'FLAGGED',
@@ -350,7 +350,7 @@ export const BANK_TRANSACTIONS: BankTransaction[] = [
     transactionId: 'TXN-NEFT-2047-118',
     from: 'A502 (Yes Bank XXXX0192)',
     to: 'A610 (Canara Bank XXXX7741)',
-    amount: '?18,00,000',
+    amount: 'â‚¹18,00,000',
     amountNumeric: 1800000,
     risk: 'HIGH',
     status: 'FLAGGED',
@@ -363,7 +363,7 @@ export const BANK_TRANSACTIONS: BankTransaction[] = [
     transactionId: 'TXN-ATM-2047-440',
     from: 'A610 (Canara Bank XXXX7741)',
     to: 'ATM Withdrawal (Dadar Branch)',
-    amount: '?8,60,000',
+    amount: 'â‚¹8,60,000',
     amountNumeric: 860000,
     risk: 'HIGH',
     status: 'FLAGGED',
@@ -376,7 +376,7 @@ export const DETECTED_ANOMALIES: AnomalyItem[] = [
   {
     id: 'an-1',
     title: 'Rapid Cash-Out Velocity (91% in 105m)',
-    description: '?1.02Cr transferred out via 6 sub-accounts within 105 minutes of initial deposit credit.',
+    description: 'â‚¹1.02Cr transferred out via 6 sub-accounts within 105 minutes of initial deposit credit.',
     icon: 'speed',
     type: 'cashout',
     risk: 'HIGH'
@@ -384,7 +384,7 @@ export const DETECTED_ANOMALIES: AnomalyItem[] = [
   {
     id: 'an-2',
     title: 'Dormant Mule Account Sudden Activation',
-    description: 'Account A204 (Kotak) dormant for 11 months, suddenly processed ?1.12Cr in single session.',
+    description: 'Account A204 (Kotak) dormant for 11 months, suddenly processed â‚¹1.12Cr in single session.',
     icon: 'account_balance',
     type: 'layering',
     risk: 'HIGH'
@@ -392,7 +392,7 @@ export const DETECTED_ANOMALIES: AnomalyItem[] = [
   {
     id: 'an-3',
     title: 'Structuring & Round-Trip Transfers',
-    description: 'Split transactions of ?49,000 to bypass mandatory ?50,000 PAN verification rules.',
+    description: 'Split transactions of â‚¹49,000 to bypass mandatory ?50,000 PAN verification rules.',
     icon: 'call_split',
     type: 'counterparties',
     risk: 'HIGH'
@@ -416,7 +416,7 @@ export const SOCIAL_PROFILES: SocialProfile[] = [
     linkedEntity: 'P102',
     risk: 'HIGH',
     confidence: '96%',
-    description: '18-day-old Telegram channel. 4,200 subscribers. Broadcasting fake ?13,000 daily video rating tasks.',
+    description: '18-day-old Telegram channel. 4,200 subscribers. Broadcasting fake â‚¹13,000 daily video rating tasks.',
     avatarUrl: 'https://api.dicebear.com/7.x/bottts/svg?seed=p102',
     followers: '4.2K',
     postsCount: 340,
@@ -479,7 +479,7 @@ export const ACTIVITY_TIMELINE_ITEMS: ActivityTimelineItem[] = [
   {
     id: 'tl-2',
     time: '14:31 IST',
-    title: 'Critical Coordination Call — P102?P087',
+    title: 'Critical Coordination Call ï¿½ P102?P087',
     description: '4m 21s call from TWR-MUM-401. Followed by ?14.8L transfer 15s later.',
     color: 'bg-indigo-500',
     category: 'cdr'
@@ -520,13 +520,13 @@ export const INITIAL_NOTES: InvestigationNote[] = [
 ];
 
 export const NETWORK_NODES: { id: string; label: string; type: 'person' | 'bank' | 'ip' | 'social'; risk: 'HIGH' | 'MED' | 'LOW'; x: number; y: number }[] = [
-  { id: 'P102', label: 'P102 — Rajesh K. (Mastermind)', type: 'person', risk: 'HIGH', x: 50, y: 30 },
-  { id: 'P087', label: 'P087 — Vikram S. (Mule Handler)', type: 'person', risk: 'HIGH', x: 28, y: 55 },
-  { id: 'P044', label: 'P044 — Sunita R. (Social Lure)', type: 'person', risk: 'MED', x: 72, y: 55 },
-  { id: 'P610', label: 'P610 — Suresh V. (Aggregator)', type: 'person', risk: 'HIGH', x: 15, y: 80 },
-  { id: 'A204', label: 'A204 — Kotak (Layer-1 Mule)', type: 'bank', risk: 'HIGH', x: 30, y: 82 },
-  { id: 'A301', label: 'A301 — AU Small Fin (Layer-2)', type: 'bank', risk: 'HIGH', x: 50, y: 82 },
-  { id: 'A502', label: 'A502 — Yes Bank (Crypto Offramp)', type: 'bank', risk: 'HIGH', x: 70, y: 82 },
+  { id: 'P102', label: 'P102 ï¿½ Rajesh K. (Mastermind)', type: 'person', risk: 'HIGH', x: 50, y: 30 },
+  { id: 'P087', label: 'P087 ï¿½ Vikram S. (Mule Handler)', type: 'person', risk: 'HIGH', x: 28, y: 55 },
+  { id: 'P044', label: 'P044 ï¿½ Sunita R. (Social Lure)', type: 'person', risk: 'MED', x: 72, y: 55 },
+  { id: 'P610', label: 'P610 ï¿½ Suresh V. (Aggregator)', type: 'person', risk: 'HIGH', x: 15, y: 80 },
+  { id: 'A204', label: 'A204 ï¿½ Kotak (Layer-1 Mule)', type: 'bank', risk: 'HIGH', x: 30, y: 82 },
+  { id: 'A301', label: 'A301 ï¿½ AU Small Fin (Layer-2)', type: 'bank', risk: 'HIGH', x: 50, y: 82 },
+  { id: 'A502', label: 'A502 ï¿½ Yes Bank (Crypto Offramp)', type: 'bank', risk: 'HIGH', x: 70, y: 82 },
   { id: 'IP-49', label: '49.32.88.19 (NordVPN SG)', type: 'ip', risk: 'HIGH', x: 82, y: 25 },
   { id: 'IP-103', label: '103.45.XX.21 (Jio LEIS)', type: 'ip', risk: 'HIGH', x: 20, y: 25 },
   { id: 'SOC-1', label: '@quick_jobs_help (Telegram)', type: 'social', risk: 'HIGH', x: 78, y: 40 }
@@ -548,7 +548,7 @@ export const CASES_INTELLIGENCE_DATABASE: CaseIntelligenceSummary[] = [
   {
     id: 'INV-2047',
     caseNumber: 'CYB/MUM/2026/2047',
-    title: 'Suspicious Digital & Financial Network — Video Rating UPI Scam',
+    title: 'Suspicious Digital & Financial Network ï¿½ Video Rating UPI Scam',
     category: 'UPI Job Fraud',
     severity: 'HIGH',
     status: 'ACTIVE INVESTIGATION',
@@ -564,18 +564,18 @@ export const CASES_INTELLIGENCE_DATABASE: CaseIntelligenceSummary[] = [
       flaggedCalls: 312,
       ipSessions: 4891,
       suspiciousIPs: 47,
-      totalFinancialVolume: '?4.2Cr',
-      frozenAmount: '?1.1Cr',
+      totalFinancialVolume: 'â‚¹4.2Cr',
+      frozenAmount: 'â‚¹1.1Cr',
       identifiedMuleAccounts: 14,
       socialHandlesMonitored: 23,
       crossDomainCorrelationConfidence: 94
     },
     domainBreakdown: {
       cdr: {
-        keyFinding: 'Mass dialing from SIM cluster — 312 flagged calls in 48h window.',
+        keyFinding: 'Mass dialing from SIM cluster ï¿½ 312 flagged calls in 48h window.',
         primaryNumbers: ['+91 99201 88102', '+91 88019 20193'],
         cellTowerHotspots: ['TWR-MUM-401 (Nariman Point)', 'TWR-MUM-208 (BKC)'],
-        callBurstWindows: '09:00–11:30 IST & 15:00–18:00 IST daily'
+        callBurstWindows: '09:00ï¿½11:30 IST & 15:00ï¿½18:00 IST daily'
       },
       ipdr: {
         keyFinding: 'VPN-masked sessions from 3 IPs routing through Singapore endpoints. 4.8GB upload anomaly.',
@@ -584,7 +584,7 @@ export const CASES_INTELLIGENCE_DATABASE: CaseIntelligenceSummary[] = [
         geoLocations: ['Mumbai', 'Singapore']
       },
       bank: {
-        keyFinding: 'A204 received ?1.12Cr from 45 victims. 91% outflow within 105 minutes via 6 sub-accounts.',
+        keyFinding: 'A204 received â‚¹1.12Cr from 45 victims. 91% outflow within 105 minutes via 6 sub-accounts.',
         primaryAccounts: ['A204 (Kotak XXXX9281)', 'A301 (AU Small Fin XXXX1029)'],
         layeringVelocity: '91% within 105 minutes',
         cryptoOffRampDetected: true
@@ -601,8 +601,8 @@ export const CASES_INTELLIGENCE_DATABASE: CaseIntelligenceSummary[] = [
       { id: 'P087', name: 'Vikram S. / MuleHandler_V', role: 'Mule Coordinator', risk: 'HIGH', phone: '+91 88019 20193', bankAcc: 'AU Small Finance #****1029' }
     ],
     timeline: [
-      { time: '09:00 IST', date: '02 Aug 2026', stage: 'Bulk SMS Outreach', description: '25,000 SMS sent offering ?13,000 daily payout.', risk: 'MED', domain: 'SOCIAL' },
-      { time: '11:45 IST', date: '02 Aug 2026', stage: 'UPI Deposit Collection', description: '?1.12Cr collected from 45 victims in single session.', risk: 'HIGH', domain: 'BANK' }
+      { time: '09:00 IST', date: '02 Aug 2026', stage: 'Bulk SMS Outreach', description: '25,000 SMS sent offering â‚¹13,000 daily payout.', risk: 'MED', domain: 'SOCIAL' },
+      { time: '11:45 IST', date: '02 Aug 2026', stage: 'UPI Deposit Collection', description: 'â‚¹1.12Cr collected from 45 victims in single session.', risk: 'HIGH', domain: 'BANK' }
     ],
     tacticalRecommendations: [
       { action: 'Finalize chargesheet under Sec 66D IT Act / Sec 63 BSA.', priority: 'IMMEDIATE', legalSection: 'Sec 66D IT Act' },

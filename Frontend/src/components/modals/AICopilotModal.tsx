@@ -103,7 +103,7 @@ export const AICopilotModal: React.FC<AICopilotModalProps> = ({ isOpen, onClose 
               activeTab === 'predict' ? 'border-indigo-500 text-indigo-300' : 'border-transparent text-slate-400 hover:text-white'
             }`}
           >
-            ?? Criminal Next Move Engine
+            ₹ Criminal Next Move Engine
           </button>
           <button
             onClick={() => { setActiveTab('cdr'); setResult(null); }}
@@ -111,7 +111,7 @@ export const AICopilotModal: React.FC<AICopilotModalProps> = ({ isOpen, onClose 
               activeTab === 'cdr' ? 'border-indigo-500 text-indigo-300' : 'border-transparent text-slate-400 hover:text-white'
             }`}
           >
-            ?? CDR Call Vector AI
+            ₹ CDR Call Vector AI
           </button>
           <button
             onClick={() => { setActiveTab('bank'); setResult(null); }}
@@ -119,7 +119,7 @@ export const AICopilotModal: React.FC<AICopilotModalProps> = ({ isOpen, onClose 
               activeTab === 'bank' ? 'border-indigo-500 text-indigo-300' : 'border-transparent text-slate-400 hover:text-white'
             }`}
           >
-            ?? Financial Mule AI
+            ₹ Financial Mule AI
           </button>
           <button
             onClick={() => { setActiveTab('dossier'); setResult(null); }}
@@ -127,7 +127,7 @@ export const AICopilotModal: React.FC<AICopilotModalProps> = ({ isOpen, onClose 
               activeTab === 'dossier' ? 'border-indigo-500 text-indigo-300' : 'border-transparent text-slate-400 hover:text-white'
             }`}
           >
-            ?? Sec 63 BSA Court Dossier
+            ₹ Sec 63 BSA Court Dossier
           </button>
         </div>
 

@@ -42,7 +42,7 @@ export const LogInspectionScreen: React.FC<LogInspectionScreenProps> = ({
     transactionId: 'TXN-UPI-2047-001',
     from: 'Victim-G (quicktask.pay@ybl)',
     to: 'A204 (Kotak Mahindra XXXX9281)',
-    amount: '?49,000',
+    amount: 'â‚¹49,000',
     handle: '@quick_jobs_help',
     platform: 'Telegram'
   };
@@ -124,7 +124,7 @@ export const LogInspectionScreen: React.FC<LogInspectionScreenProps> = ({
             <div className="flex items-center gap-3">
               <span className="px-3 py-1 bg-rose-500/20 text-rose-300 text-xs font-bold rounded-full border border-rose-500/30 uppercase tracking-wider flex items-center gap-1.5">
                 <span className="w-2 h-2 rounded-full bg-rose-400 animate-ping"></span>
-                {data.status || 'FLAGGED'} • CRITICAL THREAT
+                {data.status || 'FLAGGED'} ï¿½ CRITICAL THREAT
               </span>
               <span className="px-3 py-1 bg-emerald-500/20 text-emerald-300 text-xs font-bold rounded-full border border-emerald-500/30 flex items-center gap-1">
                 <span className="material-symbols-outlined text-[14px]">lock</span>
@@ -140,7 +140,7 @@ export const LogInspectionScreen: React.FC<LogInspectionScreenProps> = ({
             </h2>
 
             <p className="text-slate-300 text-xs leading-relaxed">
-              Timestamp: <strong className="text-white">{data.time || '14:34:12 IST'}</strong> • Primary Suspect Node: <strong className="text-indigo-400 cursor-pointer" onClick={() => onSelectEntity(data.entity || 'P102')}>{data.entity || 'P102 (Rajesh K.)'}</strong>
+              Timestamp: <strong className="text-white">{data.time || '14:34:12 IST'}</strong> ï¿½ Primary Suspect Node: <strong className="text-indigo-400 cursor-pointer" onClick={() => onSelectEntity(data.entity || 'P102')}>{data.entity || 'P102 (Rajesh K.)'}</strong>
             </p>
           </div>
 
@@ -167,7 +167,7 @@ export const LogInspectionScreen: React.FC<LogInspectionScreenProps> = ({
               activeTab === 'network' ? 'border-indigo-500 text-indigo-300' : 'border-transparent text-slate-400 hover:text-white'
             }`}
           >
-            ?? Interactive Cross-Domain Topology Graph
+            â‚¹ Interactive Cross-Domain Topology Graph
           </button>
           <button
             onClick={() => setActiveTab('hex')}
@@ -193,7 +193,7 @@ export const LogInspectionScreen: React.FC<LogInspectionScreenProps> = ({
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left 2 Columns: Detailed Parameters & AI Reasoning */}
           <div className="lg:col-span-2 space-y-6">
-            {/* ?? AI Forensic Deep Dive Banner */}
+            {/* â‚¹ AI Forensic Deep Dive Banner */}
             <div className="p-6 rounded-3xl bg-gradient-to-br from-indigo-950/80 via-slate-900/90 to-purple-950/80 border border-indigo-500/30 space-y-4 shadow-2xl backdrop-blur-xl">
               <div className="flex justify-between items-center pb-3 border-b border-indigo-500/20">
                 <div className="flex items-center gap-2.5">
@@ -275,7 +275,7 @@ export const LogInspectionScreen: React.FC<LogInspectionScreenProps> = ({
                 </div>
                 <div className="p-3.5 bg-white/[0.02] border border-white/5 rounded-2xl">
                   <span className="text-[10px] text-slate-500 block uppercase font-bold">Tower Geolocation</span>
-                  <span className="text-slate-300 font-mono">18.9220° N, 72.8347° E</span>
+                  <span className="text-slate-300 font-mono">18.9220ï¿½ N, 72.8347ï¿½ E</span>
                 </div>
                 <div className="p-3.5 bg-white/[0.02] border border-white/5 rounded-2xl">
                   <span className="text-[10px] text-slate-500 block uppercase font-bold">IMEI Serial</span>
@@ -284,7 +284,7 @@ export const LogInspectionScreen: React.FC<LogInspectionScreenProps> = ({
 
                 <div className="p-3.5 bg-white/[0.02] border border-white/5 rounded-2xl col-span-2">
                   <span className="text-[10px] text-slate-500 block uppercase font-bold">Correlated Financial Mule Account</span>
-                  <span className="font-bold text-rose-300">Kotak Mahindra #****9281 (A204) — ?1.12Cr Inflow</span>
+                  <span className="font-bold text-rose-300">Kotak Mahindra #****9281 (A204) ï¿½ â‚¹1.12Cr Inflow</span>
                 </div>
                 <div className="p-3.5 bg-white/[0.02] border border-white/5 rounded-2xl">
                   <span className="text-[10px] text-slate-500 block uppercase font-bold">PMLA Compliance Status</span>
@@ -304,7 +304,7 @@ export const LogInspectionScreen: React.FC<LogInspectionScreenProps> = ({
                 </div>
                 <div>
                   <h4 className="font-bold text-white text-base">Rajesh K. ("CyberBoss_Raj")</h4>
-                  <span className="text-xs text-rose-400 font-semibold">Mastermind Node • Clearance Flag</span>
+                  <span className="text-xs text-rose-400 font-semibold">Mastermind Node ï¿½ Clearance Flag</span>
                 </div>
               </div>
 
@@ -354,7 +354,7 @@ export const LogInspectionScreen: React.FC<LogInspectionScreenProps> = ({
         <div className="space-y-4">
           <div className="flex justify-between items-center">
             <h3 className="font-bold text-base text-white">Full-Screen Interactive Cross-Domain Topology Graph</h3>
-            <span className="text-xs text-slate-400">Hover over any node to highlight linked paths • Click for AI findings</span>
+            <span className="text-xs text-slate-400">Hover over any node to highlight linked paths ï¿½ Click for AI findings</span>
           </div>
           <InteractiveNetworkGraph onSelectEntity={onSelectEntity} height="h-[600px]" />
         </div>
