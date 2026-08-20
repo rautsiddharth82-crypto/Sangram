@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { NavTab } from '../../types';
 import { api } from '../../services/api';
+import { InteractiveNetworkGraph } from '../InteractiveNetworkGraph';
 
 export type LogType = 'CDR' | 'IPDR' | 'BANK' | 'SOCIAL';
 
@@ -151,34 +152,34 @@ export const LogInspectionScreen: React.FC<LogInspectionScreenProps> = ({
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex border-b border-white/10 mt-8 gap-3">
+        <div className="flex border-b border-white/10 mt-8 gap-3 overflow-x-auto">
           <button
             onClick={() => setActiveTab('overview')}
-            className={`pb-3 px-4 text-xs font-bold border-b-2 transition-all cursor-pointer ${
+            className={`pb-3 px-4 text-xs font-bold border-b-2 transition-all cursor-pointer whitespace-nowrap ${
               activeTab === 'overview' ? 'border-indigo-500 text-indigo-300' : 'border-transparent text-slate-400 hover:text-white'
             }`}
           >
-            Forensic Overview & AI Reasoning
+            Forensic Overview &amp; AI Reasoning
           </button>
           <button
             onClick={() => setActiveTab('network')}
-            className={`pb-3 px-4 text-xs font-bold border-b-2 transition-all cursor-pointer ${
+            className={`pb-3 px-4 text-xs font-bold border-b-2 transition-all cursor-pointer whitespace-nowrap ${
               activeTab === 'network' ? 'border-indigo-500 text-indigo-300' : 'border-transparent text-slate-400 hover:text-white'
             }`}
           >
-            Network Routing & Hop Trace
+            ?? Interactive Cross-Domain Topology Graph
           </button>
           <button
             onClick={() => setActiveTab('hex')}
-            className={`pb-3 px-4 text-xs font-bold border-b-2 transition-all cursor-pointer ${
+            className={`pb-3 px-4 text-xs font-bold border-b-2 transition-all cursor-pointer whitespace-nowrap ${
               activeTab === 'hex' ? 'border-indigo-500 text-indigo-300' : 'border-transparent text-slate-400 hover:text-white'
             }`}
           >
-            Raw Intercept Hex & Packet Dump
+            Raw Intercept Hex &amp; Packet Dump
           </button>
           <button
             onClick={() => setActiveTab('chain')}
-            className={`pb-3 px-4 text-xs font-bold border-b-2 transition-all cursor-pointer ${
+            className={`pb-3 px-4 text-xs font-bold border-b-2 transition-all cursor-pointer whitespace-nowrap ${
               activeTab === 'chain' ? 'border-indigo-500 text-indigo-300' : 'border-transparent text-slate-400 hover:text-white'
             }`}
           >
@@ -200,7 +201,7 @@ export const LogInspectionScreen: React.FC<LogInspectionScreenProps> = ({
                     <span className="material-symbols-outlined text-[18px]">psychology</span>
                   </div>
                   <div>
-                    <h3 className="font-bold text-sm text-white">Groq AI Log Reasoning & Crime Pattern Diagnosis</h3>
+                    <h3 className="font-bold text-sm text-white">Groq AI Log Reasoning &amp; Crime Pattern Diagnosis</h3>
                     <span className="text-[10px] text-indigo-300 font-mono">Model: groq/compound (Groq Cloud API)</span>
                   </div>
                 </div>
@@ -216,7 +217,7 @@ export const LogInspectionScreen: React.FC<LogInspectionScreenProps> = ({
                     <span className="text-[10px] uppercase font-bold text-rose-400 block mb-1">Crime Signature Diagnosis</span>
                     <p className="text-white text-sm font-bold">{aiResult.fraudPattern || aiResult.threatLevel || 'VPN-MASKED EXFILTRATION & LAYER-1 MULE CASHOUT'}</p>
                     <p className="text-slate-300 text-xs mt-1 leading-relaxed">
-                      {aiResult.callVectorAnalysis || aiResult.transactionSummary?.reasons?.join(', ') || 'Groq AI identified correlation: Log coincides with 14.8L UPI deposit to A204 followed by 91% rapid cashout via 6 mule accounts within 105 minutes.'}
+                      {aiResult.callVectorAnalysis || aiResult.transactionSummary?.reasons?.join(', ') || 'Groq AI identified correlation: Log coincides with ?14.8L UPI deposit to A204 followed by 91% rapid cashout via 6 mule accounts within 105 minutes.'}
                     </p>
                   </div>
 
@@ -239,6 +240,15 @@ export const LogInspectionScreen: React.FC<LogInspectionScreenProps> = ({
                   </button>
                 </div>
               )}
+            </div>
+
+            {/* Embedded Interactive Topology Graph Card */}
+            <div className="space-y-3">
+              <div className="flex justify-between items-center px-1">
+                <h3 className="font-bold text-sm text-white uppercase tracking-wider">Cross-Domain Entity Link Topology Graph</h3>
+                <span className="text-xs text-indigo-400 font-bold">Click any node to inspect evidence</span>
+              </div>
+              <InteractiveNetworkGraph onSelectEntity={onSelectEntity} height="h-[460px]" />
             </div>
 
             {/* Deep Parameters Grid */}
@@ -339,36 +349,14 @@ export const LogInspectionScreen: React.FC<LogInspectionScreenProps> = ({
         </div>
       )}
 
-      {/* Network Hop Trace Tab */}
+      {/* Network Topology Full Tab */}
       {activeTab === 'network' && (
-        <div className="p-6 rounded-3xl bg-white/[0.03] border border-white/10 space-y-6 shadow-2xl backdrop-blur-xl">
-          <h3 className="font-bold text-base text-white">IPDR Packet Hop Routing Trace</h3>
-
-          <div className="space-y-4 text-xs">
-            <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 flex items-center justify-between">
-              <div>
-                <span className="text-[10px] text-indigo-400 font-bold uppercase block">Hop 1 — Suspect Local Terminal</span>
-                <span className="font-mono text-white text-sm">103.45.22.10 (Nariman Point BTS, Mumbai)</span>
-              </div>
-              <span className="px-2.5 py-1 bg-emerald-500/20 text-emerald-300 text-[10px] font-bold rounded-full">Latency: 12ms</span>
-            </div>
-
-            <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 flex items-center justify-between">
-              <div>
-                <span className="text-[10px] text-amber-400 font-bold uppercase block">Hop 2 — Encrypted VPN Gateway</span>
-                <span className="font-mono text-amber-300 text-sm">49.32.88.19 (NordVPN SG Exit Server)</span>
-              </div>
-              <span className="px-2.5 py-1 bg-amber-500/20 text-amber-300 text-[10px] font-bold rounded-full">Latency: 84ms</span>
-            </div>
-
-            <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 flex items-center justify-between">
-              <div>
-                <span className="text-[10px] text-rose-400 font-bold uppercase block">Hop 3 — Fraud Destination Endpoint</span>
-                <span className="font-mono text-rose-300 text-sm">210.89.44.02 (Binance P2P Crypto OTC Gateway)</span>
-              </div>
-              <span className="px-2.5 py-1 bg-rose-500/20 text-rose-300 text-[10px] font-bold rounded-full">Exfil: 2.1 GB</span>
-            </div>
+        <div className="space-y-4">
+          <div className="flex justify-between items-center">
+            <h3 className="font-bold text-base text-white">Full-Screen Interactive Cross-Domain Topology Graph</h3>
+            <span className="text-xs text-slate-400">Hover over any node to highlight linked paths • Click for Groq AI findings</span>
           </div>
+          <InteractiveNetworkGraph onSelectEntity={onSelectEntity} height="h-[600px]" />
         </div>
       )}
 
@@ -376,7 +364,7 @@ export const LogInspectionScreen: React.FC<LogInspectionScreenProps> = ({
       {activeTab === 'hex' && (
         <div className="p-6 rounded-3xl bg-slate-950 border border-white/10 space-y-4 shadow-2xl">
           <div className="flex justify-between items-center">
-            <h3 className="font-bold text-sm text-white font-mono">Raw Packet Intercept Payload (Hex & ASCII)</h3>
+            <h3 className="font-bold text-sm text-white font-mono">Raw Packet Intercept Payload (Hex &amp; ASCII)</h3>
             <span className="text-[10px] text-slate-500 font-mono">Capture Length: 512 bytes</span>
           </div>
 
@@ -387,7 +375,7 @@ export const LogInspectionScreen: React.FC<LogInspectionScreenProps> = ({
 00000030  48 6f 73 74 3a 20 61 70  69 2e 74 65 6c 65 67 72  |Host: api.telegr|
 00000040  61 6d 2e 6f 72 67 0d 0a  41 75 74 68 6f 72 69 7a  |am.org..Authoriz|
 00000050  61 74 69 6f 6e 3a 20 42  65 61 72 65 72 20 74 6f  |ation: Bearer to|
-00000060  6b 65 6e 5f 71 75 69 63  6b 5f 6a 6f 62 73 5f 68  |ken_quick_jobs_h|
+00000060  6b 65 6e 5f 71 75 69 63  6b 5f 6a 6f 62 73 5f 68  |elp_2026..Conten|
 00000070  65 6c 70 5f 32 30 32 36  0d 0a 43 6f 6e 74 65 6e  |elp_2026..Conten|
 00000080  74 2d 54 79 70 65 3a 20  61 70 70 6c 69 63 61 74  |t-Type: applicat|
 00000090  69 6f 6e 2f 6a 73 6f 6e  0d 0a 0d 0a 7b 22 75 70  |ion/json....{"up|
