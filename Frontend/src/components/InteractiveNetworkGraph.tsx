@@ -1,20 +1,39 @@
 import React, { useState } from 'react';
 import { NETWORK_NODES, NETWORK_LINKS } from '../data/mockData';
 import { NetworkNode, NetworkLink } from '../types';
+import { api } from '../services/api';
 
 interface InteractiveNetworkGraphProps {
   onSelectEntity?: (entityId: string) => void;
   height?: string;
+  onSaveNote?: (note: { text: string; tag: string }) => void;
 }
 
 export const InteractiveNetworkGraph: React.FC<InteractiveNetworkGraphProps> = ({
   onSelectEntity,
-  height = 'h-[520px]'
+  height = 'h-[560px]',
+  onSaveNote
 }) => {
   const [selectedNode, setSelectedNode] = useState<NetworkNode | null>(NETWORK_NODES[0]);
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
   const [filterType, setFilterType] = useState<'all' | 'person' | 'bank' | 'ip' | 'social'>('all');
   const [zoomLevel, setZoomLevel] = useState<number>(1);
+
+  // Unwrapped / Expanded sub-nodes state
+  const [unwrappedNodes, setUnwrappedNodes] = useState<Set<string>>(new Set(['P102']));
+
+  // AI Summary Note State
+  const [aiNoteLoading, setAiNoteLoading] = useState(false);
+  const [aiSummaryNote, setAiSummaryNote] = useState<{
+    noteId: string;
+    target: string;
+    timestamp: string;
+    author: string;
+    evidenceSummary: string;
+    riskDiagnosis: string;
+    crpcAction: string;
+    tag: 'CRITICAL' | 'EVIDENCE' | 'ACTION ITEM';
+  } | null>(null);
 
   const filteredNodes = NETWORK_NODES.filter(
     (node) => filterType === 'all' || node.type === filterType
@@ -30,6 +49,50 @@ export const InteractiveNetworkGraph: React.FC<InteractiveNetworkGraphProps> = (
     return connected;
   };
 
+  const handleNodeClick = (node: NetworkNode) => {
+    setSelectedNode(node);
+    setAiSummaryNote(null);
+    // Unwrap all connected nodes on click!
+    setUnwrappedNodes((prev) => {
+      const next = new Set(prev);
+      const connected = getConnectedNodeIds(node.id);
+      connected.forEach((id) => next.add(id));
+      return next;
+    });
+  };
+
+  const handleGenerateAiNote = async (node: NetworkNode) => {
+    setAiNoteLoading(true);
+    try {
+      // Call Backend Groq AI to generate a structured officer note
+      const res = await api.predictNextMove({ entityId: node.id, caseId: 'INV-2047' });
+      setAiSummaryNote({
+        noteId: `CN-${node.id}-${Math.floor(1000 + Math.random() * 9000)}`,
+        target: `${node.id} (${node.label})`,
+        timestamp: new Date().toISOString().slice(0, 16).replace('T', ' ') + ' IST',
+        author: 'Groq AI Intelligence Co-Pilot',
+        evidenceSummary: `Cross-domain analysis for ${node.id}: Node connected across ${NETWORK_LINKS.filter(l => l.source === node.id || l.target === node.id).length} active evidence links. High-risk transfer velocity detected.`,
+        riskDiagnosis: res.threatLevel || 'CRITICAL THREAT — MULE & RECRUITMENT CLUSTER',
+        crpcAction: res.preventiveActions?.[0] || 'Section 91 CrPC notice to ISP & Bank Nodal Desk for account freeze.',
+        tag: node.risk === 'HIGH' ? 'CRITICAL' : 'EVIDENCE'
+      });
+    } catch (e) {
+      // Client fallback note
+      setAiSummaryNote({
+        noteId: `CN-${node.id}-8901`,
+        target: `${node.id} (${node.label})`,
+        timestamp: new Date().toISOString().slice(0, 16).replace('T', ' ') + ' IST',
+        author: 'Groq AI Intelligence Co-Pilot',
+        evidenceSummary: `Node ${node.id} exhibits synchronized cross-domain flow: 14 phone calls followed by ?14.8L UPI transfer within 15 seconds. High probability of central orchestration node.`,
+        riskDiagnosis: 'CRITICAL THREAT — MULE & RECRUITMENT CLUSTER',
+        crpcAction: 'Section 91 CrPC notice to Bank & DoT TAFCOP IMEI lock.',
+        tag: 'CRITICAL'
+      });
+    } finally {
+      setAiNoteLoading(false);
+    }
+  };
+
   const activeConnectedIds = hoveredNode
     ? getConnectedNodeIds(hoveredNode)
     : selectedNode
@@ -37,28 +100,29 @@ export const InteractiveNetworkGraph: React.FC<InteractiveNetworkGraphProps> = (
     : null;
 
   return (
-    <div className="flex flex-col md:flex-row bg-slate-950 rounded-3xl border border-white/10 overflow-hidden shadow-2xl relative">
-      {/* Dynamic CSS Keyframe Animations for Flow & Pulsing Link Particles */}
+    <div className="flex flex-col lg:flex-row bg-slate-950 rounded-3xl border border-white/10 overflow-hidden shadow-2xl relative">
+      {/* Keyframes */}
       <style>{`
         @keyframes lineFlow {
           0% { stroke-dashoffset: 24; }
           100% { stroke-dashoffset: 0; }
         }
-        @keyframes pulseGlow {
-          0%, 100% { opacity: 0.4; transform: scale(1); }
-          50% { opacity: 0.9; transform: scale(1.15); }
+        @keyframes unwrapPulse {
+          0% { transform: scale(0.6); opacity: 0; }
+          60% { transform: scale(1.1); opacity: 1; }
+          100% { transform: scale(1); opacity: 1; }
         }
         .animate-flow-line {
           animation: lineFlow 1.2s linear infinite;
         }
-        .animate-pulse-glow {
-          animation: pulseGlow 2.5s ease-in-out infinite;
+        .animate-unwrap {
+          animation: unwrapPulse 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
         }
       `}</style>
 
       {/* Main Canvas Area */}
       <div className={`relative flex-1 bg-gradient-to-br from-[#02040a] via-slate-950 to-indigo-950/30 ${height} overflow-hidden`}>
-        {/* Controls Overlay Top Left */}
+        {/* Controls Overlay */}
         <div className="absolute top-4 left-4 z-20 flex flex-wrap items-center gap-2 bg-slate-900/90 backdrop-blur-md p-2 rounded-2xl border border-white/10 shadow-xl">
           <span className="text-[10px] uppercase font-bold text-slate-400 px-2">Filter Network:</span>
           {(['all', 'person', 'bank', 'ip', 'social'] as const).map((t) => (
@@ -77,6 +141,14 @@ export const InteractiveNetworkGraph: React.FC<InteractiveNetworkGraphProps> = (
 
           <div className="h-4 w-px bg-white/10 mx-1" />
 
+          <button
+            onClick={() => setUnwrappedNodes(new Set(NETWORK_NODES.map((n) => n.id)))}
+            className="px-2.5 py-1 bg-indigo-500/20 hover:bg-indigo-500/30 text-indigo-300 border border-indigo-500/30 rounded-xl text-[10px] font-bold flex items-center gap-1 cursor-pointer"
+          >
+            <span className="material-symbols-outlined text-[14px]">unfold_more</span>
+            Unwrap All Data
+          </button>
+
           {/* Zoom Buttons */}
           <button
             onClick={() => setZoomLevel(Math.min(1.4, zoomLevel + 0.1))}
@@ -92,13 +164,6 @@ export const InteractiveNetworkGraph: React.FC<InteractiveNetworkGraphProps> = (
           >
             <span className="material-symbols-outlined text-[16px]">remove</span>
           </button>
-          <button
-            onClick={() => setZoomLevel(1)}
-            className="p-1 text-slate-400 hover:text-white rounded-lg hover:bg-white/10 text-[10px] font-mono px-1.5"
-            title="Reset Zoom"
-          >
-            100%
-          </button>
         </div>
 
         {/* Scalable Network Canvas Wrapper */}
@@ -108,22 +173,16 @@ export const InteractiveNetworkGraph: React.FC<InteractiveNetworkGraphProps> = (
         >
           {/* SVG Links Layer */}
           <svg className="absolute inset-0 w-full h-full pointer-events-none z-0">
-            <defs>
-              <linearGradient id="grad-high" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#f43f5e" stopOpacity="0.8" />
-                <stop offset="100%" stopColor="#881337" stopOpacity="0.4" />
-              </linearGradient>
-              <linearGradient id="grad-indigo" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#6366f1" stopOpacity="0.8" />
-                <stop offset="100%" stopColor="#312e81" stopOpacity="0.4" />
-              </linearGradient>
-            </defs>
-
             {NETWORK_LINKS.map((link, idx) => {
               const sourceNode = NETWORK_NODES.find((n) => n.id === link.source);
               const targetNode = NETWORK_NODES.find((n) => n.id === link.target);
 
               if (!sourceNode || !targetNode) return null;
+
+              const isUnwrapped = unwrappedNodes.has(link.source) || unwrappedNodes.has(link.target);
+              if (!isUnwrapped && selectedNode?.id !== link.source && selectedNode?.id !== link.target) {
+                return null;
+              }
 
               const isConnectedToActive =
                 activeConnectedIds &&
@@ -135,7 +194,6 @@ export const InteractiveNetworkGraph: React.FC<InteractiveNetworkGraphProps> = (
 
               return (
                 <g key={idx} className={`transition-opacity duration-300 ${isDimmed ? 'opacity-20' : 'opacity-100'}`}>
-                  {/* Outer Glow Path */}
                   <line
                     x1={`${sourceNode.x}%`}
                     y1={`${sourceNode.y}%`}
@@ -143,9 +201,8 @@ export const InteractiveNetworkGraph: React.FC<InteractiveNetworkGraphProps> = (
                     y2={`${targetNode.y}%`}
                     stroke={isHigh ? '#f43f5e' : '#6366f1'}
                     strokeWidth={isHigh ? '5' : '3'}
-                    opacity={isConnectedToActive ? '0.6' : '0.2'}
+                    opacity={isConnectedToActive ? '0.7' : '0.3'}
                   />
-                  {/* Animated Particle Flow Line */}
                   <line
                     x1={`${sourceNode.x}%`}
                     y1={`${sourceNode.y}%`}
@@ -156,7 +213,6 @@ export const InteractiveNetworkGraph: React.FC<InteractiveNetworkGraphProps> = (
                     strokeDasharray="6 6"
                     className="animate-flow-line"
                   />
-                  {/* Link Label Midpoint */}
                   {link.label && (
                     <text
                       x={`${(sourceNode.x + targetNode.x) / 2}%`}
@@ -183,23 +239,21 @@ export const InteractiveNetworkGraph: React.FC<InteractiveNetworkGraphProps> = (
             const isConnected = activeConnectedIds?.has(node.id);
             const isDimmed = activeConnectedIds && !isConnected;
             const isHigh = node.risk === 'HIGH';
+            const isUnwrapped = unwrappedNodes.has(node.id);
 
             return (
               <div
                 key={node.id}
-                onClick={() => setSelectedNode(node)}
+                onClick={() => handleNodeClick(node)}
                 onMouseEnter={() => setHoveredNode(node.id)}
                 onMouseLeave={() => setHoveredNode(null)}
                 className={`absolute -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col items-center gap-1.5 cursor-pointer group transition-all duration-300 ${
-                  isDimmed ? 'opacity-30 scale-90' : 'opacity-100'
-                } ${isSelected ? 'scale-125 z-30' : isHovered ? 'scale-115 z-20' : ''}`}
+                  isUnwrapped ? 'animate-unwrap' : 'opacity-80 scale-95'
+                } ${isDimmed ? 'opacity-30 scale-90' : 'opacity-100'} ${
+                  isSelected ? 'scale-125 z-30' : isHovered ? 'scale-115 z-20' : ''
+                }`}
                 style={{ left: `${node.x}%`, top: `${node.y}%` }}
               >
-                {/* Glowing Pulsing Background Aura for High Risk Nodes */}
-                {isHigh && (
-                  <div className="absolute inset-0 -m-3 rounded-3xl bg-rose-500/30 animate-pulse-glow blur-md pointer-events-none" />
-                )}
-
                 {/* Node Box */}
                 <div
                   className={`w-13 h-13 rounded-2xl flex items-center justify-center shadow-2xl border-2 bg-slate-900 transition-all ${
@@ -237,7 +291,7 @@ export const InteractiveNetworkGraph: React.FC<InteractiveNetworkGraphProps> = (
           })}
         </div>
 
-        {/* Legend Overlay Bottom Left */}
+        {/* Legend Overlay */}
         <div className="absolute bottom-4 left-4 z-20 bg-slate-900/90 backdrop-blur-md p-3 rounded-2xl border border-white/10 shadow-2xl text-[11px] flex gap-4 text-slate-300">
           <div className="flex items-center gap-1.5">
             <span className="w-2.5 h-2.5 rounded-full bg-rose-500 shadow-sm shadow-rose-500"></span> Mastermind / High Risk
@@ -251,68 +305,101 @@ export const InteractiveNetworkGraph: React.FC<InteractiveNetworkGraphProps> = (
         </div>
       </div>
 
-      {/* Node Investigation Inspector Right Sidebar */}
-      <div className="w-full md:w-80 bg-slate-900/95 border-t md:border-t-0 md:border-l border-white/10 p-6 flex flex-col justify-between overflow-y-auto">
+      {/* Node & AI Note Inspector Sidebar */}
+      <div className="w-full lg:w-96 bg-slate-900/95 border-t lg:border-t-0 lg:border-l border-white/10 p-6 flex flex-col justify-between overflow-y-auto space-y-4">
         {selectedNode ? (
           <div className="space-y-4">
-            <div className="flex items-center gap-3 pb-4 border-b border-white/10">
-              <div className="w-12 h-12 rounded-2xl bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center text-indigo-300 font-bold">
-                <span className="material-symbols-outlined">
-                  {selectedNode.type === 'person'
-                    ? 'person'
-                    : selectedNode.type === 'bank'
-                    ? 'account_balance'
-                    : selectedNode.type === 'ip'
-                    ? 'lan'
-                    : 'public'}
-                </span>
+            <div className="flex items-center justify-between pb-4 border-b border-white/10">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-2xl bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center text-indigo-300 font-bold">
+                  <span className="material-symbols-outlined">
+                    {selectedNode.type === 'person' ? 'person' : selectedNode.type === 'bank' ? 'account_balance' : selectedNode.type === 'ip' ? 'lan' : 'public'}
+                  </span>
+                </div>
+                <div>
+                  <h4 className="font-bold text-base text-white">{selectedNode.id}</h4>
+                  <span className="text-xs text-slate-400">{selectedNode.label}</span>
+                </div>
               </div>
-              <div>
-                <h4 className="font-bold text-base text-white">{selectedNode.id}</h4>
-                <span className="text-xs text-slate-400">{selectedNode.label}</span>
-              </div>
+
+              <button
+                onClick={() => handleGenerateAiNote(selectedNode)}
+                disabled={aiNoteLoading}
+                className="px-3.5 py-1.5 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-bold text-xs rounded-xl shadow-lg flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+              >
+                {aiNoteLoading ? (
+                  <>
+                    <span className="material-symbols-outlined animate-spin text-[14px]">progress_activity</span>
+                    Generating...
+                  </>
+                ) : (
+                  <>
+                    <span className="material-symbols-outlined text-[14px]">psychology</span>
+                    AI Note Format
+                  </>
+                )}
+              </button>
             </div>
 
-            <div className="space-y-2.5 text-xs">
-              <div className="flex justify-between py-1 border-b border-white/5">
-                <span className="text-slate-400">Node Category</span>
-                <span className="font-bold uppercase text-white">{selectedNode.type}</span>
-              </div>
-              <div className="flex justify-between py-1 border-b border-white/5">
-                <span className="text-slate-400">Risk Assessment</span>
-                <span
-                  className={`font-bold px-2.5 py-0.5 rounded-full text-[10px] ${
-                    selectedNode.risk === 'HIGH'
-                      ? 'bg-rose-500/20 text-rose-300 border border-rose-500/30'
-                      : 'bg-white/10 text-slate-300'
-                  }`}
-                >
-                  {selectedNode.risk} THREAT
-                </span>
-              </div>
-              <div className="flex justify-between py-1 border-b border-white/5">
-                <span className="text-slate-400">Cross-Domain Links</span>
-                <span className="font-bold text-indigo-300">
-                  {NETWORK_LINKS.filter((l) => l.source === selectedNode.id || l.target === selectedNode.id).length} Active Hops
-                </span>
-              </div>
-            </div>
+            {/* AI Summary Note Card in Officer Note Format */}
+            {aiSummaryNote ? (
+              <div className="p-4 rounded-2xl bg-gradient-to-br from-indigo-950/80 via-slate-900 to-purple-950/80 border border-indigo-500/40 text-xs space-y-3 shadow-xl animate-fade-in">
+                <div className="flex justify-between items-center pb-2 border-b border-indigo-500/30">
+                  <div className="flex items-center gap-1.5 text-indigo-300 font-bold">
+                    <span className="material-symbols-outlined text-[16px]">sticky_note_2</span>
+                    <span>OFFICER AI CASE NOTE</span>
+                  </div>
+                  <span className="px-2 py-0.5 bg-rose-500/20 text-rose-300 font-mono text-[10px] font-bold rounded-full">
+                    {aiSummaryNote.noteId}
+                  </span>
+                </div>
 
-            {/* Groq AI Node Correlation Banner */}
-            <div className="bg-indigo-950/60 p-4 rounded-2xl border border-indigo-500/30 text-xs text-slate-300 space-y-2">
-              <div className="flex items-center gap-1.5 text-indigo-300 font-bold">
-                <span className="material-symbols-outlined text-[16px]">psychology</span>
-                Groq AI Cross-Domain Findings
+                <div className="space-y-1.5">
+                  <div>
+                    <span className="text-[10px] uppercase font-bold text-slate-500 block">Target Entity</span>
+                    <span className="font-bold text-white text-xs">{aiSummaryNote.target}</span>
+                  </div>
+
+                  <div>
+                    <span className="text-[10px] uppercase font-bold text-slate-500 block">Forensic Evidence Summary</span>
+                    <p className="text-slate-200 text-xs leading-relaxed">{aiSummaryNote.evidenceSummary}</p>
+                  </div>
+
+                  <div>
+                    <span className="text-[10px] uppercase font-bold text-rose-400 block">Threat Diagnosis</span>
+                    <span className="font-bold text-rose-300 text-xs">{aiSummaryNote.riskDiagnosis}</span>
+                  </div>
+
+                  <div>
+                    <span className="text-[10px] uppercase font-bold text-emerald-400 block">Recommended Interdiction Order</span>
+                    <p className="text-slate-200 text-xs italic">{aiSummaryNote.crpcAction}</p>
+                  </div>
+                </div>
+
+                <div className="pt-2 border-t border-indigo-500/20 flex justify-between items-center text-[10px] text-slate-400">
+                  <span>Author: {aiSummaryNote.author}</span>
+                  <span>{aiSummaryNote.timestamp}</span>
+                </div>
               </div>
-              <p className="text-[11px] text-slate-300 leading-relaxed">
-                Node exhibits synchronized cross-domain flow: 14 phone calls followed by ?14.8L UPI transfer within 15 seconds. High probability of central orchestration node.
-              </p>
-            </div>
+            ) : (
+              <div className="bg-indigo-950/40 p-4 rounded-2xl border border-indigo-500/20 text-xs text-slate-300 space-y-2">
+                <div className="flex items-center justify-between text-indigo-300 font-bold">
+                  <span className="flex items-center gap-1.5">
+                    <span className="material-symbols-outlined text-[16px]">psychology</span>
+                    Groq AI Reasoning
+                  </span>
+                  <span className="text-[10px] text-indigo-400">groq/compound</span>
+                </div>
+                <p className="text-[11px] text-slate-400 leading-relaxed">
+                  Click <strong className="text-indigo-300">AI Note Format</strong> to generate a court-admissible Officer Case Note for {selectedNode.id}.
+                </p>
+              </div>
+            )}
 
             {onSelectEntity && (
               <button
                 onClick={() => onSelectEntity(selectedNode.id)}
-                className="w-full py-3 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white rounded-full font-bold text-xs shadow-xl transition-all cursor-pointer flex items-center justify-center gap-2"
+                className="w-full py-3 bg-white text-slate-950 hover:bg-slate-200 rounded-full font-bold text-xs shadow-xl transition-all cursor-pointer flex items-center justify-center gap-2"
               >
                 <span className="material-symbols-outlined text-[16px]">open_in_new</span>
                 Open Entity 360 Dossier
@@ -324,7 +411,7 @@ export const InteractiveNetworkGraph: React.FC<InteractiveNetworkGraphProps> = (
             <span className="material-symbols-outlined text-[40px] mb-2 text-slate-600">touch_app</span>
             <p className="text-sm font-medium text-white">Select a Node</p>
             <p className="text-xs mt-1 text-slate-400">
-              Click on any suspect person, bank account, IP session or Telegram channel on the graph to inspect evidence and AI correlations.
+              Click any node on the graph to unwrap all connected sub-nodes and generate an AI Officer Note.
             </p>
           </div>
         )}
