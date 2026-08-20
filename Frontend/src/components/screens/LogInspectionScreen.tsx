@@ -97,12 +97,12 @@ export const LogInspectionScreen: React.FC<LogInspectionScreenProps> = ({
             {aiLoading ? (
               <>
                 <span className="material-symbols-outlined animate-spin text-[16px]">progress_activity</span>
-                Groq AI Analyzing...
+                AI Reasoning In Progress...
               </>
             ) : (
               <>
                 <span className="material-symbols-outlined text-[16px]">psychology</span>
-                Groq AI Deep Analysis
+                AI Forensic Deep Analysis
               </>
             )}
           </button>
@@ -191,9 +191,9 @@ export const LogInspectionScreen: React.FC<LogInspectionScreenProps> = ({
       {/* Main Screen Content */}
       {activeTab === 'overview' && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Left 2 Columns: Detailed Parameters & Groq AI Reasoning */}
+          {/* Left 2 Columns: Detailed Parameters & AI Reasoning */}
           <div className="lg:col-span-2 space-y-6">
-            {/* ?? Groq AI Forensic Deep Dive Banner */}
+            {/* ?? AI Forensic Deep Dive Banner */}
             <div className="p-6 rounded-3xl bg-gradient-to-br from-indigo-950/80 via-slate-900/90 to-purple-950/80 border border-indigo-500/30 space-y-4 shadow-2xl backdrop-blur-xl">
               <div className="flex justify-between items-center pb-3 border-b border-indigo-500/20">
                 <div className="flex items-center gap-2.5">
@@ -201,8 +201,8 @@ export const LogInspectionScreen: React.FC<LogInspectionScreenProps> = ({
                     <span className="material-symbols-outlined text-[18px]">psychology</span>
                   </div>
                   <div>
-                    <h3 className="font-bold text-sm text-white">Groq AI Log Reasoning &amp; Crime Pattern Diagnosis</h3>
-                    <span className="text-[10px] text-indigo-300 font-mono">Model: groq/compound (Groq Cloud API)</span>
+                    <h3 className="font-bold text-sm text-white">AI Log Reasoning &amp; Crime Pattern Diagnosis</h3>
+                    <span className="text-[10px] text-indigo-300 font-mono">Model: Sangram Autonomous AI Engine</span>
                   </div>
                 </div>
 
@@ -217,7 +217,7 @@ export const LogInspectionScreen: React.FC<LogInspectionScreenProps> = ({
                     <span className="text-[10px] uppercase font-bold text-rose-400 block mb-1">Crime Signature Diagnosis</span>
                     <p className="text-white text-sm font-bold">{aiResult.fraudPattern || aiResult.threatLevel || 'VPN-MASKED EXFILTRATION & LAYER-1 MULE CASHOUT'}</p>
                     <p className="text-slate-300 text-xs mt-1 leading-relaxed">
-                      {aiResult.callVectorAnalysis || aiResult.transactionSummary?.reasons?.join(', ') || 'Groq AI identified correlation: Log coincides with ?14.8L UPI deposit to A204 followed by 91% rapid cashout via 6 mule accounts within 105 minutes.'}
+                      {aiResult.callVectorAnalysis || aiResult.transactionSummary?.reasons?.join(', ') || 'AI identified correlation: Log coincides with ?14.8L UPI deposit to A204 followed by 91% rapid cashout via 6 mule accounts within 105 minutes.'}
                     </p>
                   </div>
 
@@ -229,14 +229,14 @@ export const LogInspectionScreen: React.FC<LogInspectionScreenProps> = ({
               ) : (
                 <div className="py-4 text-center space-y-3">
                   <p className="text-slate-300 text-xs">
-                    Click <strong className="text-indigo-400">Groq AI Deep Analysis</strong> to run autonomous LLM forensic reasoning on this log record.
+                    Click <strong className="text-indigo-400">AI Forensic Deep Analysis</strong> to run autonomous LLM forensic reasoning on this log record.
                   </p>
                   <button
                     onClick={handleRunAiAnalysis}
                     className="px-6 py-2.5 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white rounded-full font-bold text-xs shadow-xl shadow-indigo-500/20 inline-flex items-center gap-2 cursor-pointer"
                   >
                     <span className="material-symbols-outlined text-[16px]">bolt</span>
-                    Run Groq AI Deep Analysis
+                    Run AI Forensic Deep Analysis
                   </button>
                 </div>
               )}
@@ -354,7 +354,7 @@ export const LogInspectionScreen: React.FC<LogInspectionScreenProps> = ({
         <div className="space-y-4">
           <div className="flex justify-between items-center">
             <h3 className="font-bold text-base text-white">Full-Screen Interactive Cross-Domain Topology Graph</h3>
-            <span className="text-xs text-slate-400">Hover over any node to highlight linked paths • Click for Groq AI findings</span>
+            <span className="text-xs text-slate-400">Hover over any node to highlight linked paths • Click for AI findings</span>
           </div>
           <InteractiveNetworkGraph onSelectEntity={onSelectEntity} height="h-[600px]" />
         </div>
@@ -380,8 +380,7 @@ export const LogInspectionScreen: React.FC<LogInspectionScreenProps> = ({
 00000080  74 2d 54 79 70 65 3a 20  61 70 70 6c 69 63 61 74  |t-Type: applicat|
 00000090  69 6f 6e 2f 6a 73 6f 6e  0d 0a 0d 0a 7b 22 75 70  |ion/json....{"up|
 000000a0  69 5f 68 61 6e 64 6c 65  22 3a 22 71 75 69 63 6b  |i_handle":"quick|
-000000b0  74 61 73 6b 2e 70 61 79  40 79 62 6c 22 2c 22 61  |task.pay@ybl","a|
-000000c0  6d 6f 75 6e 74 22 3a 20  34 39 30 30 30 7d 0d 0a  |mount": 49000}..|`}
+000000b0  74 61 73 6b 2e 70 61 79  40 79 62 6c 22 2c 22 61  |amount": 49000}..|`}
           </pre>
         </div>
       )}

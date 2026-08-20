@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { NavTab, CaseAlert } from '../../types';
-import { api } from '../../services/api';
+import { CASE_METADATA } from '../../data/mockData';
 
 interface DashboardScreenProps {
+  alerts: CaseAlert[];
   onNavigateTab: (tab: NavTab) => void;
   onOpenExportReport: () => void;
   onOpenAddNote: () => void;
   onOpenNetworkModal: () => void;
   onSelectEntity: (entityId: string) => void;
-  alerts: CaseAlert[];
 }
 
 export const DashboardScreen: React.FC<DashboardScreenProps> = ({
@@ -16,223 +16,224 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({
   onOpenExportReport,
   onOpenAddNote,
   onOpenNetworkModal,
-  onSelectEntity,
-  alerts
+  onSelectEntity
 }) => {
-  const [selectedNode, setSelectedNode] = useState<string | null>(null);
-  const [isTracing, setIsTracing] = useState(false);
-  const [aiPredicting, setAiPredicting] = useState(false);
-  const [aiNextMoveResult, setAiNextMoveResult] = useState<any>(null);
-
-  const handleTraceClick = () => {
-    setIsTracing(!isTracing);
-  };
-
-  const handleRunAiPrediction = async () => {
-    setAiPredicting(true);
-    try {
-      const res = await api.predictNextMove({ entityId: 'P102', caseId: 'INV-2047' });
-      setAiNextMoveResult(res);
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setAiPredicting(false);
-    }
-  };
-
   return (
     <div className="flex flex-col gap-8 animate-fade-in">
-      {/* Hero Header & Status Banner */}
-      <div className="relative rounded-[32px] sm:rounded-[40px] overflow-hidden border border-white/10 bg-gradient-to-br from-slate-950/80 via-slate-900/60 to-[#02040a] p-6 sm:p-10 shadow-2xl backdrop-blur-xl">
-        <div className="absolute top-0 right-0 p-6 sm:p-8">
-          <div className="px-4 py-1.5 bg-white/5 backdrop-blur-md rounded-full border border-white/10 text-[11px] font-semibold tracking-widest uppercase text-indigo-300 flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-indigo-400 animate-ping"></span>
-            ACTIVE STREAM
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-4 max-w-2xl">
-          <div className="flex items-center gap-3">
-            <span className="text-[11px] font-semibold px-3 py-1 bg-rose-500/20 text-rose-300 rounded-full border border-rose-500/30 flex items-center gap-1.5 uppercase tracking-wider">
-              <span className="w-1.5 h-1.5 rounded-full bg-rose-400"></span> ACTIVE CASE
+      {/* Header Banner */}
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 bg-gradient-to-r from-slate-900/80 via-slate-900/40 to-slate-950/80 p-6 sm:p-8 rounded-[32px] border border-white/10 shadow-2xl backdrop-blur-2xl">
+        <div className="space-y-2">
+          <div className="flex flex-wrap items-center gap-3">
+            <span className="px-3 py-1 bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 text-xs font-bold rounded-full uppercase tracking-wider">
+              ACTIVE CASE {CASE_METADATA.id}
             </span>
-            <span className="text-[11px] font-semibold px-3 py-1 bg-rose-500 text-white rounded-full uppercase tracking-wider shadow-lg shadow-rose-500/20">
-              High Risk
+            <span className="px-3 py-1 bg-rose-500/20 text-rose-300 border border-rose-500/30 text-xs font-bold rounded-full uppercase tracking-wider flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-rose-500 animate-ping"></span>
+              {CASE_METADATA.riskLevel}
             </span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-medium text-white tracking-tight leading-tight">
-            Suspicious Digital &amp; <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-300 to-indigo-200">
-              Financial Network
-            </span>
+          <h2 className="text-2xl sm:text-4xl font-bold text-white tracking-tight">
+            {CASE_METADATA.title}
           </h2>
 
-          <div className="flex flex-wrap items-center gap-4 mt-2">
-            <div className="flex items-center gap-2 px-3 py-1 bg-indigo-500/20 text-indigo-300 rounded-xl text-xs font-bold border border-indigo-500/30">
-              <div className="w-1.5 h-1.5 rounded-full bg-indigo-400"></div> 98.4% CORRELATION
-            </div>
-            <p className="text-slate-400 text-sm">
-              Cross-source intelligence synchronized across 5 investigation domains
-            </p>
-          </div>
+          <p className="text-slate-400 text-xs sm:text-sm">
+            Cross-source intelligence synchronized across 5 investigation domains
+          </p>
         </div>
 
-        {/* Action Buttons */}
-        <div className="flex flex-wrap gap-3 mt-8">
+        {/* Quick Action Buttons */}
+        <div className="flex flex-wrap items-center gap-3">
           <button
-            id="run-ai-next-move-btn"
-            onClick={handleRunAiPrediction}
-            disabled={aiPredicting}
-            className="px-6 py-2.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-rose-500 hover:opacity-90 text-white rounded-full text-sm font-bold shadow-xl shadow-indigo-500/25 transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50"
+            id="open-network-topology-btn"
+            onClick={onOpenNetworkModal}
+            className="px-5 py-2.5 bg-indigo-500/20 hover:bg-indigo-500/30 text-indigo-300 border border-indigo-500/30 rounded-2xl font-bold text-xs shadow-xl transition-all flex items-center gap-2 cursor-pointer"
           >
-            {aiPredicting ? (
-              <>
-                <span className="material-symbols-outlined animate-spin text-[18px]">progress_activity</span>
-                Groq AI Computing Next Move...
-              </>
-            ) : (
-              <>
-                <span className="material-symbols-outlined text-[18px]">psychology</span>
-                Predict Criminal Next Move (Groq AI)
-              </>
-            )}
+            <span className="material-symbols-outlined text-[16px]">account_tree</span>
+            Network Graph 360
           </button>
+
           <button
-            id="case-search-dash-btn"
-            onClick={() => onNavigateTab('case-search')}
-            className="px-6 py-2.5 bg-white/10 hover:bg-white/15 text-white border border-white/10 rounded-full text-sm font-bold shadow-xl transition-all flex items-center gap-2 cursor-pointer backdrop-blur-md"
+            id="open-add-note-btn"
+            onClick={onOpenAddNote}
+            className="px-5 py-2.5 bg-white/5 hover:bg-white/10 text-slate-200 border border-white/10 rounded-2xl font-bold text-xs shadow-xl transition-all flex items-center gap-2 cursor-pointer"
           >
-            <span className="material-symbols-outlined text-[18px]">manage_search</span> Universal Case Search
+            <span className="material-symbols-outlined text-[16px]">edit_note</span>
+            Add Note
           </button>
+
           <button
-            id="export-report-dash-btn"
+            id="export-court-dossier-btn"
             onClick={onOpenExportReport}
-            className="px-6 py-2.5 bg-white text-slate-900 rounded-full text-sm font-bold shadow-xl hover:bg-slate-200 transition-all flex items-center gap-2 cursor-pointer"
+            className="px-5 py-2.5 bg-white text-slate-950 hover:bg-slate-200 rounded-2xl font-bold text-xs shadow-xl transition-all flex items-center gap-2 cursor-pointer"
           >
-            <span className="material-symbols-outlined text-[18px]">download</span> Export Report
+            <span className="material-symbols-outlined text-[16px]">verified</span>
+            Sec 63 BSA Dossier
           </button>
         </div>
-
-        {/* AI Next Move Live Card Output */}
-        {aiNextMoveResult && (
-          <div className="mt-6 p-6 rounded-3xl bg-indigo-950/60 border border-indigo-500/30 text-xs space-y-4 animate-fade-in backdrop-blur-xl">
-            <div className="flex justify-between items-center pb-3 border-b border-indigo-500/20">
-              <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-indigo-400">psychology</span>
-                <span className="font-bold text-sm text-white">Groq AI Next Move Forecast</span>
-                <span className="px-2 py-0.5 bg-emerald-500/20 text-emerald-300 text-[10px] font-bold rounded-full border border-emerald-500/30">
-                  {aiNextMoveResult.confidence || 91}% AI Confidence
-                </span>
-              </div>
-              <span className="px-3 py-1 bg-rose-500 text-white font-bold rounded-full text-[10px] uppercase tracking-wider">
-                Threat: {aiNextMoveResult.threatLevel || 'CRITICAL'}
-              </span>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-              {aiNextMoveResult.vectors?.map((v: any, idx: number) => (
-                <div key={idx} className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/5 space-y-1">
-                  <div className="flex justify-between items-center">
-                    <span className="font-bold text-white text-xs">{v.title}</span>
-                    <span className="text-rose-400 font-bold text-[10px]">{v.timeframe}</span>
-                  </div>
-                  <p className="text-slate-300 text-[11px] leading-relaxed">{v.detail}</p>
-                </div>
-              ))}
-            </div>
-
-            {aiNextMoveResult.preventiveActions && (
-              <div className="p-3.5 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl text-emerald-300">
-                <span className="font-bold text-white block mb-1">Recommended Interdiction Protocols (Section 91 CrPC)</span>
-                <div className="flex flex-wrap gap-2">
-                  {aiNextMoveResult.preventiveActions.map((act: string, i: number) => (
-                    <span key={i} className="px-2.5 py-1 bg-white/5 border border-white/10 rounded-xl text-[11px] text-slate-200">
-                      {act}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        )}
       </div>
 
-      {/* KPIs Bento Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {/* Monitored Entities */}
-        <div
-          onClick={() => onNavigateTab('social')}
-          className="bg-white/[0.03] border border-white/10 hover:border-white/20 rounded-3xl p-6 flex flex-col justify-between h-40 shadow-xl transition-all cursor-pointer group backdrop-blur-xl"
-        >
-          <div className="flex justify-between items-start">
-            <div className="text-slate-400 text-xs font-bold uppercase tracking-widest">
-              Suspect Entities
-            </div>
-            <div className="w-8 h-8 rounded-xl bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 flex items-center justify-center group-hover:scale-110 transition-transform">
-              <span className="material-symbols-outlined text-[18px]">person</span>
-            </div>
-          </div>
-          <div>
-            <div className="text-3xl font-bold text-white tracking-tight">24 Clusters</div>
-            <div className="text-xs text-indigo-400 font-medium mt-1">4 Primary Suspect Nodes</div>
-          </div>
-        </div>
-
-        {/* Flagged CDR Telephony */}
+      {/* Primary Intelligence Domains Bento Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* CDR Telephony Card */}
         <div
           onClick={() => onNavigateTab('cdr')}
-          className="bg-white/[0.03] border border-white/10 hover:border-white/20 rounded-3xl p-6 flex flex-col justify-between h-40 shadow-xl transition-all cursor-pointer group backdrop-blur-xl"
+          className="p-6 rounded-3xl bg-white/[0.03] border border-white/10 hover:border-indigo-500/50 shadow-xl backdrop-blur-xl space-y-4 cursor-pointer group transition-all"
         >
           <div className="flex justify-between items-start">
-            <div className="text-slate-400 text-xs font-bold uppercase tracking-widest">
-              Flagged Calls
+            <div className="w-12 h-12 rounded-2xl bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 flex items-center justify-center">
+              <span className="material-symbols-outlined text-[24px]">call</span>
             </div>
-            <div className="w-8 h-8 rounded-xl bg-purple-500/20 text-purple-300 border border-purple-500/30 flex items-center justify-center group-hover:scale-110 transition-transform">
-              <span className="material-symbols-outlined text-[18px]">call</span>
-            </div>
+            <span className="px-2.5 py-0.5 bg-rose-500/20 text-rose-300 text-[10px] font-bold rounded-full border border-rose-500/30">
+              312 FLAGGED
+            </span>
           </div>
+
           <div>
-            <div className="text-3xl font-bold text-white tracking-tight">312 Logs</div>
-            <div className="text-xs text-purple-400 font-medium mt-1">8 BTS Towers Hopped</div>
+            <h3 className="text-lg font-bold text-white group-hover:text-indigo-300 transition-colors">
+              CDR Telephony
+            </h3>
+            <p className="text-slate-400 text-xs mt-1 leading-relaxed">
+              1,842 total intercepts, 8 BTS cell tower hops across Mumbai clusters.
+            </p>
+          </div>
+
+          <div className="pt-3 border-t border-white/5 flex justify-between items-center text-xs font-semibold text-indigo-400">
+            <span>Inspect CDR Logs</span>
+            <span className="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">
+              arrow_forward
+            </span>
           </div>
         </div>
 
-        {/* IP Sessions Exfil */}
+        {/* IPDR Cyber Card */}
         <div
           onClick={() => onNavigateTab('ipdr')}
-          className="bg-white/[0.03] border border-white/10 hover:border-white/20 rounded-3xl p-6 flex flex-col justify-between h-40 shadow-xl transition-all cursor-pointer group backdrop-blur-xl"
+          className="p-6 rounded-3xl bg-white/[0.03] border border-white/10 hover:border-indigo-500/50 shadow-xl backdrop-blur-xl space-y-4 cursor-pointer group transition-all"
         >
           <div className="flex justify-between items-start">
-            <div className="text-slate-400 text-xs font-bold uppercase tracking-widest">
-              IPDR Sessions
+            <div className="w-12 h-12 rounded-2xl bg-purple-500/20 text-purple-300 border border-purple-500/30 flex items-center justify-center">
+              <span className="material-symbols-outlined text-[24px]">lan</span>
             </div>
-            <div className="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/30 flex items-center justify-center group-hover:scale-110 transition-transform">
-              <span className="material-symbols-outlined text-[18px]">lan</span>
-            </div>
+            <span className="px-2.5 py-0.5 bg-rose-500/20 text-rose-300 text-[10px] font-bold rounded-full border border-rose-500/30">
+              47 SUSPICIOUS IPs
+            </span>
           </div>
+
           <div>
-            <div className="text-3xl font-bold text-white tracking-tight">684 IPs</div>
-            <div className="text-xs text-amber-400 font-medium mt-1">2.1 GB Exfil Burst</div>
+            <h3 className="text-lg font-bold text-white group-hover:text-purple-300 transition-colors">
+              IPDR Cyber Sessions
+            </h3>
+            <p className="text-slate-400 text-xs mt-1 leading-relaxed">
+              4,891 sessions, 2.1 GB VPN upload burst to Singapore exit node.
+            </p>
+          </div>
+
+          <div className="pt-3 border-t border-white/5 flex justify-between items-center text-xs font-semibold text-purple-400">
+            <span>Inspect IPDR Sessions</span>
+            <span className="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">
+              arrow_forward
+            </span>
           </div>
         </div>
 
-        {/* Financial Mule Network */}
+        {/* Bank & Mule Card */}
         <div
           onClick={() => onNavigateTab('bank')}
-          className="bg-white/[0.03] border border-white/10 hover:border-white/20 rounded-3xl p-6 flex flex-col justify-between h-40 shadow-xl transition-all cursor-pointer group backdrop-blur-xl"
+          className="p-6 rounded-3xl bg-white/[0.03] border border-white/10 hover:border-indigo-500/50 shadow-xl backdrop-blur-xl space-y-4 cursor-pointer group transition-all"
         >
           <div className="flex justify-between items-start">
-            <div className="text-slate-400 text-xs font-bold uppercase tracking-widest">
-              Financial Volume
+            <div className="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-300 border border-amber-500/30 flex items-center justify-center">
+              <span className="material-symbols-outlined text-[24px]">account_balance</span>
             </div>
-            <div className="w-8 h-8 rounded-xl bg-rose-500/20 text-rose-300 border border-rose-500/30 flex items-center justify-center group-hover:scale-110 transition-transform">
-              <span className="material-symbols-outlined text-[18px]">account_balance</span>
-            </div>
+            <span className="px-2.5 py-0.5 bg-rose-500/20 text-rose-300 text-[10px] font-bold rounded-full border border-rose-500/30">
+              14 MULE ACCS
+            </span>
           </div>
+
           <div>
-            <div className="text-3xl font-bold text-white tracking-tight">?4.2 Crore</div>
-            <div className="text-xs text-rose-400 font-medium mt-1">?1.1Cr Frozen (Sec 102)</div>
+            <h3 className="text-lg font-bold text-white group-hover:text-amber-300 transition-colors">
+              Financial &amp; Mule Trails
+            </h3>
+            <p className="text-slate-400 text-xs mt-1 leading-relaxed">
+              ?4.2Cr total volume, ?1.1Cr frozen, 91% cash-out velocity in 105m.
+            </p>
+          </div>
+
+          <div className="pt-3 border-t border-white/5 flex justify-between items-center text-xs font-semibold text-amber-400">
+            <span>Inspect Mule Trails</span>
+            <span className="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">
+              arrow_forward
+            </span>
+          </div>
+        </div>
+
+        {/* Social OSINT Card */}
+        <div
+          onClick={() => onNavigateTab('social')}
+          className="p-6 rounded-3xl bg-white/[0.03] border border-white/10 hover:border-indigo-500/50 shadow-xl backdrop-blur-xl space-y-4 cursor-pointer group transition-all"
+        >
+          <div className="flex justify-between items-start">
+            <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center justify-center">
+              <span className="material-symbols-outlined text-[24px]">public</span>
+            </div>
+            <span className="px-2.5 py-0.5 bg-emerald-500/20 text-emerald-300 text-[10px] font-bold rounded-full border border-emerald-500/30">
+              23 MONITORED
+            </span>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-bold text-white group-hover:text-emerald-300 transition-colors">
+              Social OSINT &amp; Lures
+            </h3>
+            <p className="text-slate-400 text-xs mt-1 leading-relaxed">
+              @quick_jobs_help Telegram channel (4.2K members), Instagram ads.
+            </p>
+          </div>
+
+          <div className="pt-3 border-t border-white/5 flex justify-between items-center text-xs font-semibold text-emerald-400">
+            <span>Inspect OSINT Handles</span>
+            <span className="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">
+              arrow_forward
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Suspect Node Summary */}
+      <div className="p-6 sm:p-8 rounded-3xl bg-white/[0.03] border border-white/10 space-y-6 shadow-2xl backdrop-blur-xl">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-white/10 pb-4">
+          <div>
+            <h3 className="text-xl font-bold text-white">Target Mastermind Entity Dossier</h3>
+            <p className="text-slate-400 text-xs mt-0.5">Primary suspect node identified by unified cross-domain correlation engine</p>
+          </div>
+
+          <button
+            onClick={() => onSelectEntity('P102')}
+            className="px-5 py-2 bg-indigo-500/20 hover:bg-indigo-500/30 text-indigo-300 border border-indigo-500/30 rounded-2xl text-xs font-bold flex items-center gap-2 cursor-pointer"
+          >
+            <span className="material-symbols-outlined text-[16px]">account_tree</span>
+            Inspect P102 Dossier
+          </button>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs">
+          <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 space-y-2">
+            <span className="text-slate-400 text-[10px] font-bold uppercase tracking-wider block">Identity &amp; Phone</span>
+            <h4 className="text-base font-bold text-white">P102 — Rajesh K. ("CyberBoss_Raj")</h4>
+            <p className="font-mono text-slate-300">+91 99201 88102 (Bharti Airtel)</p>
+          </div>
+
+          <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 space-y-2">
+            <span className="text-slate-400 text-[10px] font-bold uppercase tracking-wider block">Banking Mule Account</span>
+            <h4 className="text-base font-bold text-rose-300">Kotak Mahindra #****9281 (A204)</h4>
+            <p className="text-slate-300">?1.12Cr total credits • Layer-1 Mule</p>
+          </div>
+
+          <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 space-y-2">
+            <span className="text-slate-400 text-[10px] font-bold uppercase tracking-wider block">Cyber &amp; OSINT Footprint</span>
+            <h4 className="text-base font-bold text-indigo-300">@quick_jobs_help (Telegram)</h4>
+            <p className="font-mono text-slate-300">49.32.88.19 (NordVPN SG Exit)</p>
           </div>
         </div>
       </div>
