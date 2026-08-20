@@ -56,7 +56,7 @@ export const LandingPageScreen: React.FC<LandingPageScreenProps> = ({
               Case 360 Search
             </a>
             <a href="#compliance" className="hover:text-white transition-colors">
-              Sec 65B Compliance
+              Sec 63 BSA Compliance
             </a>
           </nav>
 
@@ -92,7 +92,7 @@ export const LandingPageScreen: React.FC<LandingPageScreenProps> = ({
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
             </span>
-            <span className="text-[11px] font-mono font-bold tracking-widest uppercase text-slate-300">
+            <span className="text-[11px] font-sans font-bold tracking-widest uppercase text-slate-300">
               NATIONAL DIGITAL INTELLIGENCE &amp; CORRELATION GRID
             </span>
           </div>
@@ -174,7 +174,7 @@ export const LandingPageScreen: React.FC<LandingPageScreenProps> = ({
                 Statutory Readiness
               </span>
               <div className="text-2xl font-light text-amber-400 font-mono mt-1.5 flex items-baseline gap-1.5">
-                Sec 65B <span className="text-xs text-slate-400 font-normal">Certified</span>
+                Sec 63 BSA <span className="text-xs text-slate-400 font-normal">Certified</span>
               </div>
             </div>
           </div>
@@ -371,7 +371,7 @@ export const LandingPageScreen: React.FC<LandingPageScreenProps> = ({
                     SHA-256 Hash Chained &amp; Ready
                   </div>
                   <p className="text-xs text-slate-400">
-                    Automated Section 65B Indian Evidence Act certificates ready for court filing.
+                    Automated Section 63 BSA certificates ready for court filing.
                   </p>
                 </div>
 
