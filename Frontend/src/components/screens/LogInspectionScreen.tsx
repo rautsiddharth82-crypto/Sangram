@@ -118,7 +118,7 @@ export const LogInspectionScreen: React.FC<LogInspectionScreenProps> = ({
       </div>
 
       {/* Main Executive Banner */}
-      <div className="relative rounded-[32px] overflow-hidden border border-white/10 bg-gradient-to-br from-slate-950/90 via-slate-900/80 to-[#02040a] p-6 sm:p-8 shadow-2xl backdrop-blur-xl">
+      <div className="hero-banner relative rounded-[32px] overflow-hidden border border-white/10 bg-gradient-to-br from-slate-950/90 via-slate-900/80 to-[#02040a] p-6 sm:p-8 shadow-2xl backdrop-blur-xl">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
           <div className="space-y-2 max-w-2xl">
             <div className="flex items-center gap-3">
@@ -194,7 +194,7 @@ export const LogInspectionScreen: React.FC<LogInspectionScreenProps> = ({
           {/* Left 2 Columns: Detailed Parameters & AI Reasoning */}
           <div className="lg:col-span-2 space-y-6">
             {/* ₹ AI Forensic Deep Dive Banner */}
-            <div className="p-6 rounded-3xl bg-gradient-to-br from-indigo-950/80 via-slate-900/90 to-purple-950/80 border border-indigo-500/30 space-y-4 shadow-2xl backdrop-blur-xl">
+            <div className="dark-card p-6 rounded-3xl bg-gradient-to-br from-indigo-950/80 via-slate-900/90 to-purple-950/80 border border-indigo-500/30 space-y-4 shadow-2xl backdrop-blur-xl">
               <div className="flex justify-between items-center pb-3 border-b border-indigo-500/20">
                 <div className="flex items-center gap-2.5">
                   <div className="w-8 h-8 rounded-xl bg-indigo-500/20 text-indigo-300 flex items-center justify-center border border-indigo-500/30">
@@ -362,7 +362,7 @@ export const LogInspectionScreen: React.FC<LogInspectionScreenProps> = ({
 
       {/* Raw Hex Dump Tab */}
       {activeTab === 'hex' && (
-        <div className="p-6 rounded-3xl bg-slate-950 border border-white/10 space-y-4 shadow-2xl">
+        <div className="dark-card p-6 rounded-3xl bg-slate-950 border border-white/10 space-y-4 shadow-2xl">
           <div className="flex justify-between items-center">
             <h3 className="font-bold text-sm text-white font-mono">Raw Packet Intercept Payload (Hex &amp; ASCII)</h3>
             <span className="text-[10px] text-slate-500 font-mono">Capture Length: 512 bytes</span>
