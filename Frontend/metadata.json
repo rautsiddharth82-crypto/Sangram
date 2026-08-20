@@ -1,0 +1,6 @@
+{
+  "name": "SANGRAM - Digital Intel Intelligence",
+  "description": "Cross-source digital intelligence and investigation command center integrating CDR, IPDR, Banking, and Social Media analytics.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
