@@ -29,6 +29,77 @@ app.use(cors({
 }));
 app.use(express.json({ limit: '50mb' }));
 
+app.get('/', (_req, res) => {
+  res.send(`
+    <html>
+      <head>
+        <title>SANGRAM Backend API</title>
+        <style>
+          body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: #02040a;
+            color: #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+          }
+          div {
+            text-align: center;
+            border: 1px solid #1e293b;
+            padding: 3rem;
+            border-radius: 1.5rem;
+            background: #0f172a;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            max-width: 500px;
+          }
+          h1 {
+            margin-top: 0;
+            color: #6366f1;
+            font-size: 2rem;
+          }
+          p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+          }
+          a {
+            color: #10b981;
+            text-decoration: none;
+            font-weight: bold;
+            border-bottom: 2px dashed #10b981;
+            transition: color 0.2s, border-color 0.2s;
+          }
+          a:hover {
+            color: #34d399;
+            border-color: #34d399;
+          }
+          .status {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+            border-radius: 9999px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+          }
+        </style>
+      </head>
+      <body>
+        <div>
+          <span class="status">● Backend API is running</span>
+          <h1>SANGRAM Platform Services</h1>
+          <p>The forensic intelligence engine is fully operational.</p>
+          <p>Frontend is running on <a href="https://sangram-smoky.vercel.app/console#log-inspection" target="_blank">https://sangram-smoky.vercel.app/console#log-inspection</a></p>
+        </div>
+      </body>
+    </html>
+  `);
+});
+
+
 // --------------------------------------
 // GROQ AI CLIENT (Groq Cloud API)
 // --------------------------------------
