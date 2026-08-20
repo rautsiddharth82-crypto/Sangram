@@ -159,46 +159,66 @@
 /* Cards & Bento Grid in Light Mode */
 .theme-light .bg-white\/\\[0\\.03\\],
 .theme-light div[class*="bg-white/0.03"],
-.theme-light div[class*="bg-white/5"] {
+.theme-light div[class*="bg-white/5"],
+.theme-light div[class*="bg-slate-900/80"] {
   background-color: #FFFFFF !important;
   border-color: #E2E8F0 !important;
   box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05) !important;
 }
 
-/* General Text Overrides in Light Mode (except inside dark cards/banners) */
-.theme-light .text-white:not(.hero-banner *):not(.dark-card *) {
+/* General Text Overrides in Light Mode */
+.theme-light .text-white {
   color: #0F172A !important;
 }
 
-.theme-light .text-slate-400:not(.hero-banner *):not(.dark-card *),
-.theme-light .text-slate-300:not(.hero-banner *):not(.dark-card *) {
+.theme-light .text-slate-400,
+.theme-light .text-slate-300 {
   color: #475569 !important;
 }
 
-/* Dark Hero Banner & Dark Card overrides in Light Mode */
+/* Hero Banner & Dark Card overrides in Light Mode - REMOVE ALL BLACK/DARK BACKGROUNDS */
 .theme-light .hero-banner,
-.theme-light .dark-card {
-  background: #0F172A !important;
-  border-color: #1E293B !important;
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.15) !important;
+.theme-light .dark-card,
+.theme-light div[class*="bg-gradient-to-br from-indigo-950"],
+.theme-light div[class*="bg-slate-950"],
+.theme-light div[class*="bg-slate-900"] {
+  background: #FFFFFF !important;
+  background-color: #FFFFFF !important;
+  border-color: #E2E8F0 !important;
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05) !important;
 }
 
 .theme-light .hero-banner h2,
 .theme-light .hero-banner h3,
 .theme-light .hero-banner .text-white,
 .theme-light .hero-banner strong,
+.theme-light .hero-banner button,
 .theme-light .dark-card h2,
 .theme-light .dark-card h3,
 .theme-light .dark-card .text-white,
 .theme-light .dark-card strong {
-  color: #FFFFFF !important;
+  color: #0F172A !important;
 }
 
 .theme-light .hero-banner p,
 .theme-light .hero-banner span,
 .theme-light .dark-card p,
 .theme-light .dark-card span {
-  color: #94A3B8 !important;
+  color: #475569 !important;
+}
+
+/* Tab borders and separators in Light Mode */
+.theme-light .border-white\/10 {
+  border-color: #E2E8F0 !important;
+}
+
+/* Pre & Code blocks in Light Mode */
+.theme-light pre,
+.theme-light code,
+.theme-light pre[class*="bg-black/60"] {
+  background-color: #F8FAFC !important;
+  color: #0F172A !important;
+  border: 1px solid #E2E8F0 !important;
 }
 
 /* Inputs & Selects in Light Mode */
