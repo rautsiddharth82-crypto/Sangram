@@ -1,13 +1,13 @@
-﻿{
+{
   "name": "sangram-backend",
   "version": "1.0.0",
-  "description": "SANGRAM Unified Investigative Analytics Platform — Backend API",
+  "description": "SANGRAM Unified Investigative Analytics Platform - Backend API",
   "type": "module",
-  "main": "dist/server.js",
+  "main": "dist/api/index.js",
   "scripts": {
-    "dev": "tsx watch src/server.ts",
+    "dev": "tsx watch api/index.ts",
     "build": "tsc",
-    "start": "node dist/server.js",
+    "start": "node dist/api/index.js",
     "lint": "tsc --noEmit"
   },
   "dependencies": {
