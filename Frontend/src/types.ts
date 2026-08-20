@@ -1,4 +1,4 @@
-export type NavTab = 'dashboard' | 'case-search' | 'cdr' | 'ipdr' | 'bank' | 'social';
+export type NavTab = 'dashboard' | 'case-search' | 'cdr' | 'ipdr' | 'bank' | 'social' | 'log-inspection';
 
 export type RiskLevel = 'HIGH' | 'MED' | 'LOW';
 export type RecordStatus = 'FLAGGED' | 'CLEARED' | 'REVIEW' | 'Active' | 'Monitoring';

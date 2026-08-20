@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 import { BANK_TRANSACTIONS, DETECTED_ANOMALIES as BANK_ANOMALIES } from '../../data/mockData';
 import { BankTransaction } from '../../types';
-import { LogInspectorModal } from '../modals/LogInspectorModal';
 
 interface BankScreenProps {
   onOpenExportReport: () => void;
   onSelectEntity: (entityId: string) => void;
+  onInspectLog?: (type: 'BANK', record: BankTransaction) => void;
 }
 
 export const BankScreen: React.FC<BankScreenProps> = ({
   onOpenExportReport,
-  onSelectEntity
+  onSelectEntity,
+  onInspectLog
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [inspectedBankLog, setInspectedBankLog] = useState<BankTransaction | null>(null);
 
   const filteredTxns = BANK_TRANSACTIONS.filter((tx) => {
     return (
@@ -104,14 +104,14 @@ export const BankScreen: React.FC<BankScreenProps> = ({
                 <th className="p-4">AMOUNT</th>
                 <th className="p-4">RISK</th>
                 <th className="p-4">STATUS</th>
-                <th className="p-4 text-right pr-6">ACTION / INSPECT</th>
+                <th className="p-4 text-right pr-6">ACTION / FULL INSPECTION PAGE</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5 text-slate-300">
               {filteredTxns.map((tx) => (
                 <tr
                   key={tx.id}
-                  onClick={() => setInspectedBankLog(tx)}
+                  onClick={() => onInspectLog?.('BANK', tx)}
                   className="hover:bg-white/5 transition-colors cursor-pointer group"
                 >
                   <td className="p-4 pl-6">
@@ -139,12 +139,12 @@ export const BankScreen: React.FC<BankScreenProps> = ({
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        setInspectedBankLog(tx);
+                        onInspectLog?.('BANK', tx);
                       }}
-                      className="px-3 py-1 bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/30 rounded-xl text-[11px] font-bold flex items-center gap-1 ml-auto cursor-pointer"
+                      className="px-3 py-1.5 bg-gradient-to-r from-rose-500 to-red-600 hover:from-rose-600 hover:to-red-700 text-white rounded-xl text-[11px] font-bold flex items-center gap-1.5 ml-auto cursor-pointer shadow-md"
                     >
-                      <span className="material-symbols-outlined text-[14px]">psychology</span>
-                      Inspect Txn Log
+                      <span className="material-symbols-outlined text-[14px]">search_hands_free</span>
+                      Full Inspection Page
                     </button>
                   </td>
                 </tr>
@@ -153,15 +153,6 @@ export const BankScreen: React.FC<BankScreenProps> = ({
           </table>
         </div>
       </div>
-
-      {/* Log Inspector Modal with Groq AI Reasoning */}
-      <LogInspectorModal
-        isOpen={!!inspectedBankLog}
-        onClose={() => setInspectedBankLog(null)}
-        logType="BANK"
-        logData={inspectedBankLog}
-        onSelectEntity={onSelectEntity}
-      />
     </div>
   );
 };

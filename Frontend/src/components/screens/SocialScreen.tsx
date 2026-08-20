@@ -1,19 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { SOCIAL_PROFILES } from '../../data/mockData';
 import { SocialProfile } from '../../types';
-import { LogInspectorModal } from '../modals/LogInspectorModal';
 
 interface SocialScreenProps {
   onOpenExportReport: () => void;
   onSelectEntity: (entityId: string) => void;
+  onInspectLog?: (type: 'SOCIAL', record: SocialProfile) => void;
 }
 
 export const SocialScreen: React.FC<SocialScreenProps> = ({
   onOpenExportReport,
-  onSelectEntity
+  onSelectEntity,
+  onInspectLog
 }) => {
-  const [inspectedSocialLog, setInspectedSocialLog] = useState<SocialProfile | null>(null);
-
   return (
     <div className="flex flex-col gap-8 animate-fade-in">
       {/* Header */}
@@ -42,7 +41,7 @@ export const SocialScreen: React.FC<SocialScreenProps> = ({
         {SOCIAL_PROFILES.map((profile) => (
           <div
             key={profile.id}
-            onClick={() => setInspectedSocialLog(profile)}
+            onClick={() => onInspectLog?.('SOCIAL', profile)}
             className="p-6 rounded-3xl bg-white/[0.03] border border-white/10 hover:border-white/20 shadow-xl backdrop-blur-xl space-y-4 cursor-pointer group transition-all"
           >
             <div className="flex justify-between items-start">
@@ -67,12 +66,12 @@ export const SocialScreen: React.FC<SocialScreenProps> = ({
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    setInspectedSocialLog(profile);
+                    onInspectLog?.('SOCIAL', profile);
                   }}
-                  className="px-3 py-1 bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 border border-purple-500/30 rounded-xl text-[11px] font-bold flex items-center gap-1 cursor-pointer"
+                  className="px-3.5 py-1.5 bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white rounded-xl text-[11px] font-bold flex items-center gap-1 cursor-pointer shadow-md"
                 >
-                  <span className="material-symbols-outlined text-[14px]">psychology</span>
-                  Inspect
+                  <span className="material-symbols-outlined text-[14px]">search_hands_free</span>
+                  Full Inspection Page
                 </button>
               </div>
             </div>
@@ -87,15 +86,6 @@ export const SocialScreen: React.FC<SocialScreenProps> = ({
           </div>
         ))}
       </div>
-
-      {/* Log Inspector Modal with Groq AI Reasoning */}
-      <LogInspectorModal
-        isOpen={!!inspectedSocialLog}
-        onClose={() => setInspectedSocialLog(null)}
-        logType="SOCIAL"
-        logData={inspectedSocialLog}
-        onSelectEntity={onSelectEntity}
-      />
     </div>
   );
 };

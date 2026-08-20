@@ -12,6 +12,7 @@ import { CDRScreen } from './components/screens/CDRScreen';
 import { IPDRScreen } from './components/screens/IPDRScreen';
 import { BankScreen } from './components/screens/BankScreen';
 import { SocialScreen } from './components/screens/SocialScreen';
+import { LogInspectionScreen, LogType } from './components/screens/LogInspectionScreen';
 
 import { NetworkModal } from './components/modals/NetworkModal';
 import { ExportReportModal } from './components/modals/ExportReportModal';
@@ -36,7 +37,7 @@ export const App: React.FC = () => {
       const hash = window.location.hash;
       if (hash.includes('#/console')) {
         const tabPart = hash.split('#')[1]?.replace('/console', '').replace('/', '');
-        if (['dashboard', 'case-search', 'cdr', 'ipdr', 'bank', 'social'].includes(tabPart)) {
+        if (['dashboard', 'case-search', 'cdr', 'ipdr', 'bank', 'social', 'log-inspection'].includes(tabPart)) {
           return tabPart as NavTab;
         }
       }
@@ -53,6 +54,10 @@ export const App: React.FC = () => {
   const [settingsModalOpen, setSettingsModalOpen] = useState(false);
   const [aiCopilotModalOpen, setAiCopilotModalOpen] = useState(false);
   const [selectedEntityId, setSelectedEntityId] = useState<string | null>(null);
+
+  // Full Page Log Inspector State
+  const [inspectedLogRecord, setInspectedLogRecord] = useState<{ type: LogType; data: any } | null>(null);
+  const [previousTab, setPreviousTab] = useState<NavTab>('dashboard');
 
   // Dynamic Alerts & Notes
   const [alerts, setAlerts] = useState<CaseAlert[]>(INITIAL_ALERTS);
@@ -105,6 +110,14 @@ export const App: React.FC = () => {
     showToast('Investigation note saved to case dossier');
   };
 
+  const handleInspectLog = (type: LogType, record: any) => {
+    setPreviousTab(activeTab);
+    setInspectedLogRecord({ type, data: record });
+    setActiveTab('log-inspection');
+    window.history.pushState({}, '', `/console#log-inspection`);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   // If outside authorized console (Landing Page Route '/')
   if (!isConsoleMode) {
     return (
@@ -155,7 +168,7 @@ export const App: React.FC = () => {
 
       {/* Side Navigation Bar */}
       <SideNavBar
-        activeTab={activeTab}
+        activeTab={activeTab === 'log-inspection' ? previousTab : activeTab}
         onSelectTab={(tab) => {
           setActiveTab(tab);
           window.history.pushState({}, '', `/console#${tab}`);
@@ -200,6 +213,7 @@ export const App: React.FC = () => {
               onOpenExportReport={() => setExportReportModalOpen(true)}
               onOpenNetworkModal={() => setNetworkModalOpen(true)}
               onSelectEntity={(ent) => setSelectedEntityId(ent)}
+              onInspectLog={(type, rec) => handleInspectLog(type, rec)}
             />
           )}
 
@@ -207,6 +221,7 @@ export const App: React.FC = () => {
             <IPDRScreen
               onOpenExportReport={() => setExportReportModalOpen(true)}
               onSelectEntity={(ent) => setSelectedEntityId(ent)}
+              onInspectLog={(type, rec) => handleInspectLog(type, rec)}
             />
           )}
 
@@ -214,6 +229,7 @@ export const App: React.FC = () => {
             <BankScreen
               onOpenExportReport={() => setExportReportModalOpen(true)}
               onSelectEntity={(ent) => setSelectedEntityId(ent)}
+              onInspectLog={(type, rec) => handleInspectLog(type, rec)}
             />
           )}
 
@@ -221,6 +237,20 @@ export const App: React.FC = () => {
             <SocialScreen
               onOpenExportReport={() => setExportReportModalOpen(true)}
               onSelectEntity={(ent) => setSelectedEntityId(ent)}
+              onInspectLog={(type, rec) => handleInspectLog(type, rec)}
+            />
+          )}
+
+          {activeTab === 'log-inspection' && (
+            <LogInspectionScreen
+              logType={inspectedLogRecord?.type || 'IPDR'}
+              logData={inspectedLogRecord?.data}
+              onBack={() => {
+                setActiveTab(previousTab || 'dashboard');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              onSelectEntity={(ent) => setSelectedEntityId(ent)}
+              onOpenExportReport={() => setExportReportModalOpen(true)}
             />
           )}
         </div>

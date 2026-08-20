@@ -1,27 +1,24 @@
 import React, { useState, useMemo } from 'react';
 import { CDR_RECORDS, CALL_PATTERNS } from '../../data/mockData';
 import { CDRRecord } from '../../types';
-import { LogInspectorModal } from '../modals/LogInspectorModal';
 
 interface CDRScreenProps {
   onOpenExportReport: () => void;
   onOpenNetworkModal: () => void;
   onSelectEntity: (entityId: string) => void;
-  onInspectRecord?: (record: CDRRecord) => void;
+  onInspectLog?: (type: 'CDR', record: CDRRecord) => void;
 }
 
 export const CDRScreen: React.FC<CDRScreenProps> = ({
   onOpenExportReport,
   onOpenNetworkModal,
   onSelectEntity,
+  onInspectLog,
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filterRisk, setFilterRisk] = useState<string>('ALL');
   const [sortBy, setSortBy] = useState<'time' | 'duration' | 'risk'>('time');
   const [sortAsc, setSortAsc] = useState(false);
-
-  // Inspector modal state
-  const [inspectedLog, setInspectedLog] = useState<CDRRecord | null>(null);
 
   const filteredRecords = useMemo(() => {
     return CDR_RECORDS.filter((rec) => {
@@ -138,14 +135,14 @@ export const CDRScreen: React.FC<CDRScreenProps> = ({
                 <th className="p-4">Duration</th>
                 <th className="p-4">Risk Level</th>
                 <th className="p-4">Cell Tower</th>
-                <th className="p-4 text-right pr-6">Action / Inspect</th>
+                <th className="p-4 text-right pr-6">Action / Full Inspection Page</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5 text-slate-300">
               {filteredRecords.map((rec) => (
                 <tr
                   key={rec.id}
-                  onClick={() => setInspectedLog(rec)}
+                  onClick={() => onInspectLog?.('CDR', rec)}
                   className="hover:bg-white/5 transition-colors cursor-pointer group"
                 >
                   <td className="p-4 pl-6 font-mono font-semibold text-slate-200">{rec.time}</td>
@@ -172,12 +169,12 @@ export const CDRScreen: React.FC<CDRScreenProps> = ({
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        setInspectedLog(rec);
+                        onInspectLog?.('CDR', rec);
                       }}
-                      className="px-3 py-1 bg-indigo-500/20 hover:bg-indigo-500/30 text-indigo-300 border border-indigo-500/30 rounded-xl text-[11px] font-bold flex items-center gap-1 ml-auto cursor-pointer"
+                      className="px-3 py-1.5 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white rounded-xl text-[11px] font-bold flex items-center gap-1.5 ml-auto cursor-pointer shadow-md"
                     >
-                      <span className="material-symbols-outlined text-[14px]">psychology</span>
-                      Inspect Log
+                      <span className="material-symbols-outlined text-[14px]">search_hands_free</span>
+                      Full Inspection Page
                     </button>
                   </td>
                 </tr>
@@ -186,15 +183,6 @@ export const CDRScreen: React.FC<CDRScreenProps> = ({
           </table>
         </div>
       </div>
-
-      {/* Log Inspector Modal with Groq AI Reasoning */}
-      <LogInspectorModal
-        isOpen={!!inspectedLog}
-        onClose={() => setInspectedLog(null)}
-        logType="CDR"
-        logData={inspectedLog}
-        onSelectEntity={onSelectEntity}
-      />
     </div>
   );
 };

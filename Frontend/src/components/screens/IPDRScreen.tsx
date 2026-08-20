@@ -1,25 +1,20 @@
 import React, { useState } from 'react';
-import { IPDR_RECORDS, SUSPICIOUS_IP_EVENTS } from '../../data/mockData';
-import { IPDRRecord, SuspiciousIPEvent } from '../../types';
-import { LogInspectorModal } from '../modals/LogInspectorModal';
+import { IPDR_RECORDS } from '../../data/mockData';
+import { IPDRRecord } from '../../types';
 
 interface IPDRScreenProps {
   onOpenExportReport: () => void;
   onSelectEntity: (entityId: string) => void;
+  onInspectLog?: (type: 'IPDR', record: IPDRRecord) => void;
 }
 
 export const IPDRScreen: React.FC<IPDRScreenProps> = ({
   onOpenExportReport,
-  onSelectEntity
+  onSelectEntity,
+  onInspectLog
 }) => {
   const [activeTabFilter, setActiveTabFilter] = useState<'all' | 'high' | 'suspicious'>('all');
   const [searchQuery, setSearchQuery] = useState('');
-  const [inspectedEvent, setInspectedEvent] = useState<SuspiciousIPEvent | null>(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [activeContextMenu, setActiveContextMenu] = useState<string | null>(null);
-
-  // Inspector modal state
-  const [inspectedIPDRLog, setInspectedIPDRLog] = useState<IPDRRecord | null>(null);
 
   const filteredIPs = IPDR_RECORDS.filter((rec) => {
     const matchesSearch =
@@ -135,14 +130,14 @@ export const IPDRScreen: React.FC<IPDRScreenProps> = ({
                 <th className="p-4">LOCATION</th>
                 <th className="p-4">RISK</th>
                 <th className="p-4">STATUS</th>
-                <th className="p-4 text-right pr-6">ACTION / INSPECT</th>
+                <th className="p-4 text-right pr-6">ACTION / FULL INSPECTION PAGE</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5 text-slate-300">
               {filteredIPs.map((rec) => (
                 <tr
                   key={rec.id}
-                  onClick={() => setInspectedIPDRLog(rec)}
+                  onClick={() => onInspectLog?.('IPDR', rec)}
                   className="hover:bg-white/5 transition-colors cursor-pointer group"
                 >
                   <td className="p-4 pl-6 font-mono text-slate-200">{rec.time}</td>
@@ -172,12 +167,12 @@ export const IPDRScreen: React.FC<IPDRScreenProps> = ({
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        setInspectedIPDRLog(rec);
+                        onInspectLog?.('IPDR', rec);
                       }}
-                      className="px-3 py-1 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/30 rounded-xl text-[11px] font-bold flex items-center gap-1 ml-auto cursor-pointer"
+                      className="px-3 py-1.5 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-slate-950 rounded-xl text-[11px] font-bold flex items-center gap-1.5 ml-auto cursor-pointer shadow-md"
                     >
-                      <span className="material-symbols-outlined text-[14px]">psychology</span>
-                      Inspect IP Log
+                      <span className="material-symbols-outlined text-[14px]">search_hands_free</span>
+                      Full Inspection Page
                     </button>
                   </td>
                 </tr>
@@ -186,15 +181,6 @@ export const IPDRScreen: React.FC<IPDRScreenProps> = ({
           </table>
         </div>
       </div>
-
-      {/* Log Inspector Modal with Groq AI Reasoning */}
-      <LogInspectorModal
-        isOpen={!!inspectedIPDRLog}
-        onClose={() => setInspectedIPDRLog(null)}
-        logType="IPDR"
-        logData={inspectedIPDRLog}
-        onSelectEntity={onSelectEntity}
-      />
     </div>
   );
 };
